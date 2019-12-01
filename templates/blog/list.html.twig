@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for post in posts %}
+        {{ include('blog/_post.html.twig', {post: post, text: post.preview, with_link: true, with_share_buttons: false}) }}
+    {% endfor %}
+{% endblock %}

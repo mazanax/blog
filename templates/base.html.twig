@@ -1,3 +1,4 @@
+{% apply spaceless %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -10,18 +11,15 @@
 <body>
 <section class="wrapper">
     <header class="site-header">
-        <h1 class="brand">
-            Gorshkov Alexander
-        </h1>
+        <h1 class="brand"><a href="/">Gorshkov Alexander</a></h1>
     </header>
     <section class="site-content">
         {% block body %}{% endblock %}
     </section>
-    <footer class="site-footer">
-        Gorshkov Alexander &copy; 2019
-    </footer>
+    <footer class="site-footer">Gorshkov Alexander &copy; 2019</footer>
 </section>
 {{ encore_entry_script_tags('app') }}
 {% block javascripts %}{% endblock %}
 </body>
 </html>
+{% endapply %}
