@@ -6,6 +6,7 @@
  */
 
 // any CSS you require will output into a single css file (app.css in this case)
+require('./social');
 require('../css/app.css');
 
 const imagesContext = require.context('../images', true, /\.(png|jpg|jpeg|gif|ico|svg|webp)$/);

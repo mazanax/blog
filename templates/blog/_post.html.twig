@@ -27,7 +27,8 @@
         <section class="text">{{ text|raw }}</section>
 
         {% if withShareButtons %}
-            {% include 'blog/_social_links.html.twig' %}
+            {% set currentUrl = absolute_url(path('blog_post', {'id': post.id, 'url': post.url})) %}
+            {{ include('blog/_social_links.html.twig', {currentUrl: currentUrl, title: post.title}, false) }}
         {% endif %}
     </article>
 {% endapply %}

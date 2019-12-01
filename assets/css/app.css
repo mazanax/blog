@@ -156,6 +156,12 @@ h1 a:active {
 }
 
 .share-btn {
+    width: 36px;
+    height: 36px;
+    display: inline-block;
+}
+
+.share-btn img {
     max-width: 36px !important;
 }
 

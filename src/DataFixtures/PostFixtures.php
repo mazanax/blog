@@ -19,6 +19,10 @@ class PostFixtures extends Fixture
             $post->setPublishedAt(DateTimeImmutable::createFromFormat('U', (string) (time() - $i * 86400)));
             $post->setUrl('my-post-' . bin2hex(random_bytes(10)));
 
+            if ($i % 7 === 0) {
+                $post->setTags(['Test', 'Post', 'Fixture']);
+            }
+
             $manager->persist($post);
         }
 
