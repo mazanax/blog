@@ -1,12 +1,27 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Gorshkov Alexander{% endblock %}</title>
+
+    {{ encore_entry_link_tags('app') }}
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<section class="wrapper">
+    <header class="site-header">
+        <h1 class="brand">
+            Gorshkov Alexander
+        </h1>
+    </header>
+    <section class="site-content">
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+    </section>
+    <footer class="site-footer">
+        Gorshkov Alexander &copy; 2019
+    </footer>
+</section>
+{{ encore_entry_script_tags('app') }}
+{% block javascripts %}{% endblock %}
+</body>
 </html>

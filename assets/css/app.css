@@ -1,0 +1,139 @@
+@font-face {
+    font-family: Kis Classico SC;
+    src: url(../fonts/KisClassicoSC.ttf);
+}
+
+@font-face {
+    font-family: 'PT Serif';
+    src: local('PT Serif'), local('PTSerif-Regular'), url(../fonts/ptserif.woff2) format('woff2'), url(../fonts/ptserif.woff) format('woff'), url(../fonts/ptserif.ttf) format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PT Serif';
+    src: local('PT Serif Italic'), local('PTSerif-Italic'), url(../fonts/ptserifitalic.woff2) format('woff2'), url(../fonts/ptserifitalic.woff) format('woff'), url(../fonts/ptserifitalic.ttf) format('truetype');
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'PT Serif';
+    src: local('PT Serif Bold'), local('PTSerif-Bold'), url(../fonts/ptserifbold.woff2) format('woff2'), url(../fonts/ptserifbold.woff) format('woff'), url(../fonts/ptserifbold.ttf) format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PT Serif';
+    src: local('PT Serif Bold Italic'), local('PTSerif-BoldItalic'), url(../fonts/ptserifbolditalic.woff2) format('woff2'), url(../fonts/ptserifbolditalic.woff) format('woff'), url(../fonts/ptserifbolditalic.ttf) format('truetype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+
+html, body, h1, header, footer, section, article, p {
+    background: #fff;
+    margin: 0;
+    padding: 0;
+    color: #000;
+}
+
+@media (max-width: 1000px) {
+    body {
+        padding: 0 20px !important;
+    }
+}
+
+body {
+    padding-left: 80px;
+}
+
+header.site-header {
+    margin: 20px 0 50px;
+}
+
+h1.brand {
+    font-size: 48pt;
+    font-family: Kis Classico SC, serif;
+}
+
+.wrapper {
+    max-width: 1000px;
+}
+
+.blog-post header {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 5px;
+}
+
+.blog-post header section.details {
+    display: block;
+}
+
+.blog-post header section.details::after {
+    clear: both;
+    display: block;
+    content: "";
+}
+
+.img-tags {
+    display: inline-block;
+    content: " ";
+    width: 24px;
+    height: 30px;
+    background: url(../images/tags.svg) no-repeat;
+    background-size: 24px 24px;
+    vertical-align: middle;
+}
+
+.blog-post header h1 {
+    font-size: 36pt;
+    font-family: Kis Classico SC, serif;
+}
+
+.blog-post header time {
+    float: right;
+    text-align: right;
+    font-family: Kis Classico SC, serif;
+    font-size: 12pt;
+}
+
+.blog-post img:not(.share-btn) {
+    max-width: 100%;
+}
+
+.blog-post p {
+    margin: 15px 0 15px;
+    line-height: 1.25;
+    font-size: 12pt;
+    font-family: PT Serif, serif;
+}
+
+.blog-post a {
+    color: #013ADF;
+    text-decoration: underline;
+}
+
+.blog-post a:hover, .blog-post a:active {
+    color: #0080FF;
+}
+
+.blog-post footer {
+    margin-top: 15px;
+    text-align: right;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 5px;
+}
+
+.share-btn {
+    max-width: 36px !important;
+}
+
+footer.site-footer {
+    margin: 25px 0 10px;
+    text-align: right;
+    font-family: Kis Classico SC, serif;
+    font-size: 14pt;
+}
