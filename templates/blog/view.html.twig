@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}{{ post.title }} — {{ parent() }}{% endblock %}
+
 {% block body %}
     {{ include('blog/_post.html.twig', {post: post, text: post.text, withLink: false, withShareButtons: true}) }}
 {% endblock %}
