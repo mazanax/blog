@@ -3,34 +3,32 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-class PostRepository
+use App\Entity\Post;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
+
+class PostRepository extends ServiceEntityRepository
 {
-    public function get(string $post): array
+    /**
+     * @param ManagerRegistry $registry
+     */
+    public function __construct(ManagerRegistry $registry)
     {
-        return $this->findPublishedPosts(1)[0];
+        parent::__construct($registry, Post::class);
     }
 
-    public function findPublishedPosts(int $limit, int $fromId = 0): array
+    /**
+     * @param int $offset
+     * @param int $limit
+     *
+     * @return QueryBuilder
+     */
+    public function createQueryBuilderForPublishedPosts(int $offset, int $limit = 10): QueryBuilder
     {
-        return [
-            [
-                'id' => bin2hex(random_bytes(10)),
-                'title' => bin2hex(random_bytes(32)),
-                'preview' => bin2hex(random_bytes(1024)),
-                'text' => bin2hex(random_bytes(4096)),
-                'url' => bin2hex(random_bytes(14)),
-                'published_at' => time(),
-                'tags' => ['first', 'second']
-            ],
-            [
-                'id' => bin2hex(random_bytes(10)),
-                'title' => bin2hex(random_bytes(32)),
-                'preview' => bin2hex(random_bytes(1024)),
-                'text' => bin2hex(random_bytes(4096)),
-                'url' => bin2hex(random_bytes(14)),
-                'published_at' => time(),
-                'tags' => [],
-            ]
-        ];
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.publishedAt', 'DESC')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
     }
 }

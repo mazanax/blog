@@ -159,6 +159,43 @@ h1 a:active {
     max-width: 36px !important;
 }
 
+ul.pagination {
+    border-top: 1px solid #f0f0f0;
+    background-color: white;
+    display: block;
+    margin: 25px 0 0;
+    padding: 25px 0 0;
+    list-style-type: none;
+    font-size: 14pt;
+    font-family: Kis Classico SC, serif;
+}
+
+ul.pagination li {
+    display: inline-block;
+    margin: 0;
+    width: calc(100% / 3);
+    text-align: center;
+}
+
+ul.pagination li:first-child {
+    text-align: left;
+    color: #ccc;
+}
+
+ul.pagination li:last-child {
+    text-align: right;
+    color: #ccc;
+}
+
+ul.pagination a {
+    color: #013ADF;
+    text-decoration: none;
+}
+
+ul.pagination a:hover, ul.pagination a:active {
+    color: #0080FF;
+}
+
 footer.site-footer {
     margin: 25px 0 10px;
     text-align: right;

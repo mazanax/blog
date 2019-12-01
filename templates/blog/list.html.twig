@@ -2,6 +2,29 @@
 
 {% block body %}
     {% for post in posts %}
-        {{ include('blog/_post.html.twig', {post: post, text: post.preview, with_link: true, with_share_buttons: false}) }}
+        {{ include('blog/_post.html.twig', {post: post, text: post.preview, withLink: true, withShareButtons: false}) }}
     {% endfor %}
+
+    <ul class="pagination">
+        {% set newerText = '&larr;&nbsp;Newer' %}
+        {% set olderText = 'Older&nbsp;&rarr;' %}
+
+        <li>
+            {% if currentPage > 1 %}
+                {% set path = currentPage == 2 ? path('blog_list') : path('blog_paginated_list', {'page': currentPage - 1}) %}
+
+                <a href="{{ path }}">{{ newerText|raw }}</a>
+            {% else %}
+                {{ newerText|raw }}
+            {% endif %}
+        </li>
+        <li class="current-page">{{ currentPage }}</li>
+        <li>
+            {% if currentPage < lastPage %}
+                <a href="{{ path('blog_paginated_list', {'page': currentPage + 1}) }}">{{ olderText|raw }}</a>
+            {% else %}
+                {{ olderText|raw }}
+            {% endif %}
+        </li>
+    </ul>
 {% endblock %}
