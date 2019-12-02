@@ -1,0 +1,6 @@
+.git
+node_modules
+composer.phar
+vendor
+public/build
+var

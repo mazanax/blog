@@ -1,0 +1,49 @@
+version: "2"
+services:
+    code:
+        build:
+            dockerfile: ./config/docker/code/Dockerfile
+            context: .
+            args:
+                - APP_ENV=prod
+        container_name: blog_code
+        depends_on:
+            - pgsql
+    nginx:
+        image: nginx:latest
+        container_name: blog_nginx
+        restart: always
+        volumes_from:
+            - code:ro
+        volumes:
+            - ./config/docker/nginx_host.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - code
+        links:
+            - fpm
+        ports:
+            - ${NGINX_PORT}:80
+    fpm:
+        build:
+            dockerfile: ./config/docker/fpm/Dockerfile
+            context: .
+        environment:
+            - APP_ENV=${APP_ENV}
+        container_name: blog_php
+        restart: always
+        depends_on:
+            - code
+        volumes_from:
+            - code
+        links:
+            - pgsql
+    pgsql:
+        image: fintrace/postgres-uuid
+        container_name: blog_postgres
+        restart: always
+        ports:
+            - 5432:5432
+        environment:
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_DB=${POSTGRES_DB}
