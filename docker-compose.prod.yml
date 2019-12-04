@@ -20,6 +20,10 @@ services:
         image: hub.mazanax.ru/blog_php:latest
         environment:
             - APP_ENV=prod
+            - APP_SECRET=${APP_SECRET:-33b1ff8771c53a5fd36061f5b42a0328}
+            - POSTGRES_USER=${POSTGRES_USER:-root}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-root}
+            - POSTGRES_DB=${POSTGRES_DB:-blog}
         container_name: blog_php
         restart: always
         depends_on:
