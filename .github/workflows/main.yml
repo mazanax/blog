@@ -34,15 +34,14 @@ jobs:
       - name: Push php image
         run: docker push $DOCKER_REGISTRY_URL/blog_php:latest
       - name: Deploy docker-compose.prod.yml to host
-        uses: appleboy/scp-action@v0.0.1
+        uses: horochx/deploy-via-scp@master
         env:
-          HOST: ${{ secrets.TARGET_HOST }}
-          USERNAME: ${{ secrets.TARGET_HOST_USERNAME }}
-          KEY: ${{ secrets.TARGET_HOST_KEY }}
-          DESTINATION_FOLDER: ${{ secrets.TARGET_HOST_DESTINATION_FOLDER }}
-        with:
-          source: "docker-compose.prod.yml"
-          target: "$DESTINATION_FOLDER"
+          local: docker-compose.prod.yml
+          remote: ${{ secrets.TARGET_HOST_DESTINATION_FOLDER }}
+          host: ${{ secrets.TARGET_HOST }}
+          user: ${{ secrets.TARGET_HOST_USERNAME }}
+          port: 22
+          key: ${{ secrets.TARGET_HOST_KEY }}
       - name: Restart docker-compose on host
         uses: appleboy/ssh-action@master
         env:
