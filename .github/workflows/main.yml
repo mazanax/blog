@@ -40,7 +40,7 @@ jobs:
           KEY: ${{ secrets.TARGET_HOST_KEY }}
         with:
           source: "docker-compose.prod.yml"
-          target: ${{ secrets.TARGET_HOST_DESTINATION_FILE }}
+          target: ${{ secrets.TARGET_HOST_DESTINATION_FOLDER }}
       - name: Restart docker-compose on host
         uses: appleboy/ssh-action@master
         env:
@@ -56,4 +56,4 @@ jobs:
           envs:
           script: |
             cd $DESTINATION_FOLDER
-            docker-compose -f $DESTINATION_FILE down && docker-compose -f $DESTINATION_FILE up -d
+            docker-compose -f docker-compose.prod.yml down && docker-compose -f docker-compose.prod.yml up -d
