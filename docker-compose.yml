@@ -5,7 +5,7 @@ services:
             dockerfile: ./config/docker/code/Dockerfile
             context: .
             args:
-                - APP_ENV=prod
+                - APP_ENV=${APP_ENV:-prod}
         container_name: blog_code
         depends_on:
             - pgsql
@@ -22,13 +22,13 @@ services:
         links:
             - fpm
         ports:
-            - ${NGINX_PORT}:80
+            - ${NGINX_PORT:-88}:80
     fpm:
         build:
             dockerfile: ./config/docker/fpm/Dockerfile
             context: .
         environment:
-            - APP_ENV=${APP_ENV}
+            - APP_ENV=${APP_ENV:-prod}
         container_name: blog_php
         restart: always
         depends_on:
@@ -44,6 +44,6 @@ services:
         ports:
             - 5432:5432
         environment:
-            - POSTGRES_USER=${POSTGRES_USER}
-            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-            - POSTGRES_DB=${POSTGRES_DB}
+            - POSTGRES_USER=${POSTGRES_USER:-root}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-root}
+            - POSTGRES_DB=${POSTGRES_DB:-blog}
