@@ -25,10 +25,35 @@ jobs:
       - name: Tag nginx image
         run: docker tag blog_nginx $DOCKER_REGISTRY_URL/blog_nginx:latest
       - name: Tag php image
-        run: docker tag blog_php $DOCKER_REGISTRY_URL/blog_php:latest
+        run: docker tag blog_fpm $DOCKER_REGISTRY_URL/blog_php:latest
       - name: Push code image
         run: docker push $DOCKER_REGISTRY_URL/blog_code:latest
       - name: Push nginx image
         run: docker push $DOCKER_REGISTRY_URL/blog_nginx:latest
       - name: Push php image
         run: docker push $DOCKER_REGISTRY_URL/blog_php:latest
+      - name: Deploy docker-compose.prod.yml to host
+        uses: appleboy/scp-action@v0.0.1
+        env:
+          HOST: ${{ secrets.TARGET_HOST }}
+          USERNAME: ${{ secrets.TARGET_HOST_USERNAME }}
+          KEY: ${{ secrets.TARGET_HOST_KEY }}
+        with:
+          source: "docker-compose.prod.yml"
+          target: ${{ secrets.TARGET_HOST_DESTINATION_FILE }}
+      - name: Restart docker-compose on host
+        uses: appleboy/ssh-action@master
+        env:
+          DESTINATION_FOLDER: ${{ secrets.TARGET_HOST_DESTINATION_FOLDER }}
+          DESTINATION_FILE: ${{ secrets.TARGET_HOST_DESTINATION_FILE }}
+          NGINX_PORT: ${{ secrets.NGINX_PORT }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        with:
+          host: ${{ secrets.TARGET_HOST }}
+          username: ${{ secrets.TARGET_HOST_USERNAME }}
+          key: ${{ secrets.TARGET_HOST_KEY }}
+          envs:
+          script: |
+            cd $DESTINATION_FOLDER
+            docker-compose -f $DESTINATION_FILE down && docker-compose -f $DESTINATION_FILE up -d
