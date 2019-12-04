@@ -9,12 +9,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+        DOCKER_USERNAME: $DOCKER_REGISTRY_LOGIN
+        DOCKER_PASSWORD: $DOCKER_REGISTRY_PASSWORD
+
     steps:
     - uses: actions/checkout@v1
     - name: Build images
       run: docker-compose build
-    - name: Authorize in registry
-      run: docker login $DOCKER_REGISTRY_URL -u $DOCKER_REGISTRY_LOGIN -p $DOCKER_REGISTRY_PASSWORD
+    -   name: Authorize in registry
+        run: docker login $DOCKER_REGISTRY_URL
     - name: Tag code image
       run: docker tag blog_code $DOCKER_REGISTRY_URL/blog_code:latest
     - name: Tag nginx image
