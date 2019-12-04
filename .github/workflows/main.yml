@@ -9,9 +9,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
-
     steps:
       - uses: actions/checkout@v1
       - name: Build images
@@ -21,22 +18,35 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_REGISTRY_LOGIN }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+          DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
       - name: Tag code image
         run: docker tag blog_code $DOCKER_REGISTRY_URL/blog_code:latest
+        env:
+          DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
       - name: Tag nginx image
         run: docker tag blog_nginx $DOCKER_REGISTRY_URL/blog_nginx:latest
+        env:
+          DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
       - name: Tag php image
         run: docker tag blog_fpm $DOCKER_REGISTRY_URL/blog_php:latest
+        env:
+          DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
       - name: Push code image
         run: docker push $DOCKER_REGISTRY_URL/blog_code:latest
+        env:
+          DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
       - name: Push nginx image
         run: docker push $DOCKER_REGISTRY_URL/blog_nginx:latest
+        env:
+          DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
       - name: Push php image
         run: docker push $DOCKER_REGISTRY_URL/blog_php:latest
+        env:
+          DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
       - name: Deploy docker-compose.prod.yml to host
         uses: horochx/deploy-via-scp@master
         env:
-          local: docker-compose.prod.yml
+          local: "./docker-compose.prod.yml"
           remote: ${{ secrets.TARGET_HOST_DESTINATION_FOLDER }}
           host: ${{ secrets.TARGET_HOST }}
           user: ${{ secrets.TARGET_HOST_USERNAME }}
@@ -46,7 +56,6 @@ jobs:
         uses: appleboy/ssh-action@master
         env:
           DESTINATION_FOLDER: ${{ secrets.TARGET_HOST_DESTINATION_FOLDER }}
-          DESTINATION_FILE: ${{ secrets.TARGET_HOST_DESTINATION_FILE }}
           NGINX_PORT: ${{ secrets.NGINX_PORT }}
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
