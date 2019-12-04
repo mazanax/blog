@@ -10,13 +10,13 @@ services:
         depends_on:
             - pgsql
     nginx:
-        image: nginx:latest
+        build:
+            dockerfile: ./config/docker/nginx/Dockerfile
+            context: .
         container_name: blog_nginx
         restart: always
         volumes_from:
             - code:ro
-        volumes:
-            - ./config/docker/nginx_host.conf:/etc/nginx/conf.d/default.conf
         depends_on:
             - code
         links:
