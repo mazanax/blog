@@ -41,8 +41,8 @@ jobs:
           KEY: ${{ secrets.TARGET_HOST_KEY }}
           DESTINATION_FOLDER: ${{ secrets.TARGET_HOST_DESTINATION_FOLDER }}
         with:
-          source: docker-compose.prod.yml
-          target: $DESTINATION_FOLDER
+          source: "docker-compose.prod.yml"
+          target: "$DESTINATION_FOLDER"
       - name: Restart docker-compose on host
         uses: appleboy/ssh-action@master
         env:
@@ -51,6 +51,7 @@ jobs:
           NGINX_PORT: ${{ secrets.NGINX_PORT }}
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
           APP_SECRET: ${{ secrets.APP_SECRET }}
         with:
           host: ${{ secrets.TARGET_HOST }}
