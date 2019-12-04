@@ -1,73 +1,52 @@
-name: CI
-
-on:
-  push:
-    branches:
-      - master
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v1
-      - name: Build images
-        run: docker-compose build
-      - name: Authorize in registry
-        run: docker login $DOCKER_REGISTRY_URL --username $DOCKER_USERNAME --password "$DOCKER_PASSWORD"
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_REGISTRY_LOGIN }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
-          DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
-      - name: Tag code image
-        run: docker tag blog_code $DOCKER_REGISTRY_URL/blog_code:latest
-        env:
-          DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
-      - name: Tag nginx image
-        run: docker tag blog_nginx $DOCKER_REGISTRY_URL/blog_nginx:latest
-        env:
-          DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
-      - name: Tag php image
-        run: docker tag blog_fpm $DOCKER_REGISTRY_URL/blog_php:latest
-        env:
-          DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
-      - name: Push code image
-        run: docker push $DOCKER_REGISTRY_URL/blog_code:latest
-        env:
-          DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
-      - name: Push nginx image
-        run: docker push $DOCKER_REGISTRY_URL/blog_nginx:latest
-        env:
-          DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
-      - name: Push php image
-        run: docker push $DOCKER_REGISTRY_URL/blog_php:latest
-        env:
-          DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
-      - name: Deploy docker-compose.prod.yml to host
-        uses: horochx/deploy-via-scp@master
-        env:
-          local: "./docker-compose.prod.yml"
-          remote: ${{ secrets.TARGET_HOST_DESTINATION_FOLDER }}
-          host: ${{ secrets.TARGET_HOST }}
-          user: ${{ secrets.TARGET_HOST_USERNAME }}
-          port: 22
-          key: ${{ secrets.TARGET_HOST_KEY }}
-      - name: Restart docker-compose on host
-        uses: appleboy/ssh-action@master
-        env:
-          DESTINATION_FOLDER: ${{ secrets.TARGET_HOST_DESTINATION_FOLDER }}
-          NGINX_PORT: ${{ secrets.NGINX_PORT }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-          APP_SECRET: ${{ secrets.APP_SECRET }}
-        with:
-          host: ${{ secrets.TARGET_HOST }}
-          username: ${{ secrets.TARGET_HOST_USERNAME }}
-          key: ${{ secrets.TARGET_HOST_KEY }}
-          envs: DESTINATION_FOLDER,NGINX_PORT,POSTGRES_USER,POSTGRES_PASSWORD,APP_SECRET
-          script: |
-            cd $DESTINATION_FOLDER
-            docker-compose -f docker-compose.prod.yml down \
-              && docker-compose -f docker-compose.prod.yml up -d \
-              && docker exec blog_php bin/console doctrine:migrations:migrate
+version: "2.1"
+services:
+  code:
+    build:
+      dockerfile: ./config/docker/code/Dockerfile
+      context: .
+      args:
+        - APP_ENV=${APP_ENV:-prod}
+    container_name: blog_code
+    depends_on:
+      - pgsql
+  nginx:
+    build:
+      dockerfile: ./config/docker/nginx/Dockerfile
+      context: .
+    container_name: blog_nginx
+    restart: always
+    volumes_from:
+      - code:ro
+    depends_on:
+      - code
+    links:
+      - fpm
+    ports:
+      - ${NGINX_PORT:-88}:80
+  fpm:
+    build:
+      dockerfile: ./config/docker/fpm/Dockerfile
+      context: .
+    environment:
+      - APP_ENV=${APP_ENV:-prod}
+      - POSTGRES_USER=${POSTGRES_USER:-root}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-root}
+      - POSTGRES_DB=${POSTGRES_DB:-blog}
+    container_name: blog_php
+    restart: always
+    depends_on:
+      - code
+    volumes_from:
+      - code
+    links:
+      - pgsql
+  pgsql:
+    image: fintrace/postgres-uuid
+    container_name: blog_postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-root}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-root}
+      - POSTGRES_DB=${POSTGRES_DB:-blog}
