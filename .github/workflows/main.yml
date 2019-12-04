@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: 
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build images
+      run: docker-compose build
+    - name: Authorize in registry
+      run: docker login $DOCKER_REGISTRY_URL -u $DOCKER_REGISTRY_LOGIN -p $DOCKER_REGISTRY_PASSWORD
+    - name: Tag code image
+      run: docker tag blog_code $DOCKER_REGISTRY_URL/blog_code:latest
+    - name: Tag nginx image
+      run: docker tag blog_nginx $DOCKER_REGISTRY_URL/blog_nginx:latest
+    - name: Tag php image
+      run: docker tag blog_php $DOCKER_REGISTRY_URL/blog_php:latest
+    - name: Push code image
+      run: docker push $DOCKER_REGISTRY_URL/blog_code:latest
+    - name: Push nginx image
+      run: docker push $DOCKER_REGISTRY_URL/blog_nginx:latest
+    - name: Push php image
+      run: docker push $DOCKER_REGISTRY_URL/blog_php:latest
