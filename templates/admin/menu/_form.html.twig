@@ -1,0 +1,60 @@
+{% extends 'admin/_form.html.twig' %}
+
+{% block _item_parent_row %}
+    <div class="field {{ errors is not empty ? 'error' }}">
+        {{ form_label(form) }}
+        {{ form_widget(form, {'attr': {'class': 'ui dropdown'}}) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
+
+{% block _item_page_row %}
+    <div class="field {{ errors is not empty ? 'error' }} js-type-fields" data-type="page" style="display: none;">
+        {{ form_label(form) }}
+        {{ form_widget(form, {'attr': {'class': 'ui dropdown'}}) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
+
+{% block _item_tag_row %}
+    <div class="field {{ errors is not empty ? 'error' }} js-type-fields" data-type="tag" style="display: none;">
+        {{ form_label(form) }}
+        {{ form_widget(form, {'attr': {'class': 'ui dropdown'}}) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
+
+{% block _item_href_row %}
+    <div class="field {{ errors is not empty ? 'error' }} js-type-fields" data-type="external" style="display: none;">
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
+
+{% block _item_inNewWindow_row %}
+    <div class="field {{ errors is not empty ? 'error' }} js-type-fields" data-type="external" style="display: none;">
+        <div class="ui checkbox">
+            {{ form_widget(form, {'attr': {'class': 'hidden'}}) }}
+            {{ form_label(form) }}
+            {{ form_errors(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{%- block _item_type_row -%}
+    <div class="inline fields">
+        {{ form_label(form) }}
+
+        {% for child in form %}
+            <div class="field">
+                <div class="ui radio checkbox">
+                    {{ form_widget(child) }}
+                    {{ form_label(child) }}
+                </div>
+            </div>
+        {% endfor %}
+
+        {{ form_errors(form) }}
+    </div>
+{%- endblock -%}

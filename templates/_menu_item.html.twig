@@ -1,0 +1,14 @@
+{% set href = item.type == 2
+    ? path('page_view', {'url': item.page.url})
+    : (item.type == -1 ? item.href :
+    (item.type == 3 ? path('blog_tag_list', {'tag': item.tag}) : '#')) %}
+<li>
+    <a href="{{ href }}" {{ item.type == -1 and item.inNewWindow ? 'target="_blank"' }}>{{ item.title }}</a>
+    {% if item.type == 1 %}
+        <ul>
+            {% for child in item.children %}
+                {{ include('_menu_item.html.twig', {'item': child}) }}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</li>

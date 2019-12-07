@@ -1,0 +1,28 @@
+{% extends 'admin/base_editor.html.twig' %}
+
+{% form_theme form 'admin/page/_form.html.twig' %}
+
+{% block title %}{{ id is null ? 'Creating' : 'Updating' }} Static Page — Admin Panel{% endblock %}
+
+{% block segment %}
+    <div class="ui tall stacked segment">
+        <h2 class="ui header">{{ title }}</h2>
+    </div>
+
+    <div class="ui stacked segment">
+        {{ form_start(form, {'attr': {'class': 'ui form'}}) }}
+        {{ form_row(form.title) }}
+        <div class="fields">
+            {{ form_row(form.url) }}
+        </div>
+
+        {{ form_row(form.content, {'attr': {'class': 'js-wysiwyg-editor wysiwyg-large'}}) }}
+
+        {{ form_rest(form) }}
+
+        <button class="ui primary button" type="submit">{{ id is null ? 'Create' : 'Update' }}</button>
+        <a href="{{ path('admin_pages') }}" onclick="return confirm('Do you really want to leave this page?');"
+           class="ui button">Cancel</a>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

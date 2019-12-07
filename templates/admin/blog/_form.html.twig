@@ -1,0 +1,17 @@
+{% extends 'admin/_form.html.twig' %}
+
+{% block _post_url_row %}
+    <div class="six wide field {{ errors is not empty ? 'error' }}">
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
+
+{% block _post_publishedAt_row %}
+    <div class="four wide field {{ errors is not empty ? 'error' }}">
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}

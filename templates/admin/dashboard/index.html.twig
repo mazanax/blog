@@ -1,0 +1,125 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Admin panel{% endblock %}
+
+{% block segment %}
+    <div class="ui tall stacked segment">
+        <h2 class="ui header">Dashboard</h2>
+    </div>
+
+    <div class="ui three cards">
+        <div class="yellow card">
+            <div class="center aligned content">
+                <div class="ui statistic">
+                    <div class="label">
+                        Scheduled Posts
+                    </div>
+                    <div class="value">
+                        {{ scheduled_count }}
+                    </div>
+                </div>
+            </div>
+            <a class="ui bottom attached basic button"
+               href="{{ path('admin_posts_create', {'strategy': 'scheduled'}) }}">
+                <i class="add icon"></i>
+                Add new
+            </a>
+        </div>
+
+        <div class="green card">
+            <div class="center aligned content">
+                <div class="ui statistic">
+                    <div class="label">
+                        Published Posts
+                    </div>
+                    <div class="value">
+                        {{ published_count }}
+                    </div>
+                </div>
+            </div>
+            <a class="ui bottom attached basic button"
+               href="{{ path('admin_posts_create', {'strategy': 'published'}) }}">
+                <i class="add icon"></i>
+                Add new
+            </a>
+        </div>
+
+        <div class="blue card">
+            <div class="center aligned content">
+                <div class="ui statistic">
+                    <div class="label">
+                        Static Pages
+                    </div>
+                    <div class="value">
+                        {{ static_pages_count }}
+                    </div>
+                </div>
+            </div>
+            <a class="ui bottom attached basic button"
+               href="{{ path('admin_pages_create') }}">
+                <i class="add icon"></i>
+                Add new
+            </a>
+        </div>
+    </div>
+
+    <div class="ui two cards">
+        <div class="yellow card">
+            {% if schedules is not empty %}
+                <div class="content">
+                    <div class="header">Upcoming Posts</div>
+                </div>
+                {% for item in schedules %}
+                    <div class="content">
+                        <a href="{{ path('admin_posts_update', {'strategy': 'scheduled', 'id': item.id}) }}"
+                           class="header">{{ item.title }}</a>
+                        <div class="meta">{{ item.publishedAt|date('M j, Y h:i A') }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="content">
+                    <div class="header">Upcoming Posts</div>
+                    <div class="ui basic placeholder segment">
+                        <div class="ui icon header">
+                            <i class="file outline icon"></i>
+                            There are no upcoming posts yet.
+                        </div>
+                        <a class="ui primary button"
+                           href="{{ path('admin_posts_create', {'strategy': 'scheduled'}) }}">
+                            <i class="add icon"></i>
+                            Add new
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+
+
+            <a class="ui bottom attached basic button"
+               href="{{ path('admin_posts_strategy', {'strategy': 'scheduled'}) }}">
+                <i class="eye icon"></i>
+                View all
+            </a>
+        </div>
+
+        <div class="green card">
+            <div class="content">
+                <div class="header">Recently Published Posts</div>
+            </div>
+            {% for item in recent_posts %}
+                <div class="content">
+                    <a href="{{ path('admin_posts_update', {'strategy': 'published', 'id': item.id}) }}"
+                       class="header">{{ item.title }}</a>
+                    <div class="meta">{{ item.publishedAt|date('M j, Y h:i A') }}</div>
+                    <div class="description"><p></p></div>
+                </div>
+
+            {% endfor %}
+
+            <a class="ui bottom attached basic button"
+               href="{{ path('admin_posts_strategy', {'strategy': 'published'}) }}">
+                <i class="eye icon"></i>
+                View all
+            </a>
+        </div>
+    </div>
+{% endblock %}

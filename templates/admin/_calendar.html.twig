@@ -1,0 +1,35 @@
+<div class="ui grid">
+    <div class="three column row">
+        <a href="?calendar-offset={{ previousMonth }}" class="left aligned column">&larr;</a>
+        {% if today %}
+            <a href="?calendar-offset={{ today }}" class="ui center aligned column sub header">{{ month }}
+                &nbsp;{{ year }}</a>
+        {% else %}
+            <span class="ui center aligned column sub header">{{ month }}&nbsp;{{ year }}</span>
+        {% endif %}
+        <a href="?calendar-offset={{ nextMonth }}" class="right aligned column">&rarr;</a>
+    </div>
+</div>
+
+<table class="ui single line table center aligned">
+    <thead>
+    <tr>
+        <th>Sun</th>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+        <th>Sat</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for days in calendar|batch(7, '') %}
+    <tr>
+        {% for day in days %}
+            <td{{ currentDay and day == currentDay ? ' class="active"' }}>{{ day }}</td>
+        {% endfor %}
+    </tr>
+    </tbody>
+    {% endfor %}
+</table>

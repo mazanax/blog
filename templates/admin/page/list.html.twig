@@ -1,0 +1,63 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Static Pages — Admin Panel{% endblock %}
+
+{% block segment %}
+    {% for label, messages in app.flashes(['success', 'error']) %}
+        {% for message in messages %}
+            <div class="ui {{ label }} message">
+                <p>{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div class="ui tall stacked segment">
+        <h2 class="ui header">
+            Static Pages
+            <a class="ui right floated primary button" href="{{ path('admin_pages_create') }}">Add new</a>
+        </h2>
+
+        {{ pages_info(currentPage, pages.count, onPage) }}.
+    </div>
+
+    {% if pages is not empty %}
+        <div class="ui basic clearing segment no-margin no-padding">
+            {{ paginate(currentPage, pages.count, onPage, 'right', true) }}
+        </div>
+
+        {% for page in pages %}
+            <form action="{{ path('admin_pages_remove', {'id': page.id}) }}"
+                  method="POST" id="remove-page-{{ page.id }}"></form>
+
+            <div class="ui stacked segments">
+                <div class="ui clearing blue segment text-wrap">
+                    <div class="ui right floated icon buttons">
+                        <a class="ui mini button"
+                           href="{{ path('admin_pages_update', {'id': page.id}) }}"><i
+                                    class="edit icon"></i></a>
+                        <button class="ui mini button" type="submit" form="remove-page-{{ page.id }}"
+                                onclick="return confirm('Do you really want to delete this page?');"><i
+                                    class="trash icon"></i></button>
+                    </div>
+
+                    #{{ page.id }}&nbsp;<a href="{{ path('page_view', {'url': page.url}) }}"
+                                           target="_blank" class="ui header">{{ page.title }}
+                        <div class="sub header">{{ path('page_view', {'url': page.url}) }}</div>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+
+        {{ paginate(currentPage, pages.count, onPage) }}
+    {% else %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="search icon"></i>
+                We don't have any static pages matching your query
+            </div>
+            <div class="inline">
+                <a class="ui primary button" href="{{ path('admin_pages_create') }}">Add Page</a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

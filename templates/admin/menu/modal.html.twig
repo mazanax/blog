@@ -1,0 +1,12 @@
+{% form_theme form 'admin/menu/_form.html.twig' %}
+
+<div class="header">{{ title }}</div>
+<div class="content">
+    {{ form(form, {'attr': {'class': 'ui form', 'id': 'menu-item-form'}}) }}
+</div>
+<div class="actions">
+    <button class="ui cancel button">Cancel</button>
+    <button class="ui primary ok button" form="menu-item-form"
+            formaction="{{ path(id ? 'admin_menu_create_in' : 'admin_menu_create', id ? {'id': id} : {}) }}"
+            type="submit">{{ id is null ? 'Add' : 'Update' }}</button>
+</div>

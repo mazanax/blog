@@ -1,0 +1,48 @@
+{% extends 'admin/base_editor.html.twig' %}
+
+{% form_theme form 'admin/blog/_form.html.twig' %}
+
+{% block title %}{{ id is null ? 'Creating' : 'Updating' }} Post — Admin Panel{% endblock %}
+
+{% block segment %}
+    <div class="ui tall stacked segment">
+        <h2 class="ui header">{{ title }}</h2>
+    </div>
+
+    <div class="ui stacked segment">
+        {{ form_start(form, {'attr': {'class': 'ui form', 'id': 'post-form'}}) }}
+        {{ form_row(form.title) }}
+        <div class="fields">
+            {{ form_row(form.url) }}
+            {{ form_row(form.publishedAt) }}
+        </div>
+
+        {{ form_row(form.preview, {'attr': {'class': 'js-wysiwyg-editor wysiwyg-small'}}) }}
+        {{ form_row(form.text, {'attr': {'class': 'js-wysiwyg-editor wysiwyg-large'}}) }}
+        {{ form_end(form) }}
+
+        <div id="post-tags" class="simple-tags"></div>
+
+        <datalist id="allowed-tags">
+            {% for tag in tags %}
+                <option value="{{ tag }}"></option>
+            {% endfor %}
+        </datalist>
+
+        <button class="ui primary button" type="submit" form="post-form">{{ id is null ? 'Create' : 'Update' }}</button>
+        <a href="{{ path('admin_posts_strategy', {'strategy': strategy}) }}"
+           onclick="return confirm('Do you really want to leave this page?');" class="ui button">Cancel</a>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {{ encore_entry_link_tags('admin-posts-modify') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('admin-posts-modify') }}
+{% endblock %}

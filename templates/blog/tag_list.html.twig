@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <header>
+        <h1>Blog entries tagged with &laquo;{{ tag }}&raquo;</h1>
+        {{ pages_info(currentPage, posts.count, onPage) }}
+    </header>
+
+    {% for post in posts %}
+        {{ include('blog/_post.html.twig', {post: post, text: post.preview|default(post.text), withLink: true, withShareButtons: false}) }}
+    {% endfor %}
+
+    <ul class="pagination">
+        {% set newerText = '&larr;&nbsp;Newer' %}
+        {% set olderText = 'Older&nbsp;&rarr;' %}
+
+        <li>
+            {% if currentPage > 1 %}
+                {% set path = currentPage == 2 ? path('blog_tag_list') : path('blog_tag_paginated_list', {'page': currentPage - 1}) %}
+
+                <a href="{{ path }}">{{ newerText|raw }}</a>
+            {% else %}
+                {{ newerText|raw }}
+            {% endif %}
+        </li>
+        <li class="current-page">{{ currentPage }}</li>
+        <li>
+            {% if currentPage < lastPage %}
+                <a href="{{ path('blog_tag_paginated_list', {'page': currentPage + 1}) }}">{{ olderText|raw }}</a>
+            {% else %}
+                {{ olderText|raw }}
+            {% endif %}
+        </li>
+    </ul>
+{% endblock %}

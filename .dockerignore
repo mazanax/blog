@@ -3,5 +3,6 @@ node_modules
 composer.phar
 vendor
 public/build
+public/uploads
 var
 .env.local

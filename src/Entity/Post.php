@@ -5,8 +5,11 @@ namespace App\Entity;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
+use RuntimeException;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
@@ -66,16 +69,22 @@ class Post
     private $publishedAt;
 
     /**
-     * @var array
+     * @var Collection
      *
-     * @ORM\Column(type="json_array")
+     * @ORM\OneToMany(targetEntity="PostTag", mappedBy="post", cascade={"persist"})
+     * @ORM\OrderBy({"order"="ASC"})
      */
-    private $tags = [];
+    private $tags;
+
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
 
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -83,7 +92,7 @@ class Post
     /**
      * @return string
      */
-    public function getUrl(): string
+    public function getUrl(): ?string
     {
         return $this->url;
     }
@@ -103,7 +112,7 @@ class Post
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -123,7 +132,7 @@ class Post
     /**
      * @return string
      */
-    public function getPreview(): string
+    public function getPreview(): ?string
     {
         return $this->preview;
     }
@@ -143,7 +152,7 @@ class Post
     /**
      * @return string
      */
-    public function getText(): string
+    public function getText(): ?string
     {
         return $this->text;
     }
@@ -169,9 +178,21 @@ class Post
     }
 
     /**
+     * @return bool
+     */
+    public function isPublished(): bool
+    {
+        try {
+            return $this->getPublishedAt() <= new DateTimeImmutable();
+        } catch (Exception $exception) {
+            throw new RuntimeException($exception->getMessage(), 0, $exception);
+        }
+    }
+
+    /**
      * @return DateTimeInterface
      */
-    public function getPublishedAt(): DateTimeInterface
+    public function getPublishedAt(): ?DateTimeInterface
     {
         return $this->publishedAt;
     }
@@ -189,23 +210,34 @@ class Post
     }
 
     /**
-     * @return array
+     * @return Collection
      */
-    public function getTags(): array
+    public function getTags(): Collection
     {
         return $this->tags;
     }
 
     /**
-     * @param array $tags
+     * @param Collection $tags
      *
      * @return Post
      */
-    public function setTags(array $tags): Post
+    public function setTags(Collection $tags): Post
     {
         $this->tags = $tags;
 
         return $this;
+    }
+
+    /**
+     * @param PostTag $tag
+     *
+     * @return Post
+     */
+    public function addTag(PostTag $tag): Post
+    {
+        $tag->setPost($this);
+        $this->tags->add($tag);
     }
 
     /**

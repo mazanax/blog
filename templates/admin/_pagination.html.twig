@@ -1,0 +1,12 @@
+<div class="ui basic {{ position }} {{ floated ? 'floated' : 'aligned' }} segment
+    {{ floated ? 'no-margin no-horizontal-padding' }}">
+    <div class="ui pagination menu">
+        {% for page in pages %}
+            {% if page == '...' %}
+                <div class="disabled item">...</div>
+            {% else %}
+                <a href="?page={{ page }}" class="{{ page == currentPage ? 'active' }} item">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

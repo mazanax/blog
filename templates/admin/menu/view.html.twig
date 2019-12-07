@@ -1,0 +1,33 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block segment %}
+    {% for label, messages in app.flashes(['success', 'error']) %}
+        {% for message in messages %}
+            <div class="ui {{ label }} message">
+                <p>{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div class="ui tall stacked segment">
+        <h2 class="ui header">
+            Site Menu
+            <button class="ui right floated primary button" type="submit" formmethod="get"
+                    onclick="addMenuItem(this);return false;"
+                    formaction="{{ path('admin_menu_create') }}">Add new
+            </button>
+        </h2>
+    </div>
+
+    <div class="ui segments js-menu js-container menu-placeholder" data-type="root">
+        {% for item in items %}
+            {{ include('admin/menu/_item.html.twig', {'item': item}) }}
+        {% endfor %}
+    </div>
+
+    <div class="ui tiny modal"></div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-menu-view') }}
+{% endblock %}

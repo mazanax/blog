@@ -53,9 +53,74 @@ header.site-header {
     margin: 20px 0 50px;
 }
 
+header.site-header menu.site-menu {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+header.site-header menu.site-menu > li {
+    display: inline-block;
+    margin: 5px 10px;
+    padding: 5px 0;
+    position: relative;
+}
+
+header.site-header menu.site-menu > li:first-child {
+    margin: 5px 10px 5px 0;
+}
+
+header.site-header menu.site-menu > li ul {
+    display: none;
+}
+
+header.site-header menu.site-menu > li a {
+    font-family: Kis Classico SC, serif;
+    font-size: 14pt;
+    color: #000;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+header.site-header menu.site-menu > li a:hover,
+header.site-header menu.site-menu > li a:active {
+    color: #0080FF;
+}
+
+header.site-header menu.site-menu > li:active ul,
+header.site-header menu.site-menu > li:focus ul,
+header.site-header menu.site-menu > li:hover ul {
+    display: block;
+    position: absolute;
+    top: 5px;
+    margin: 20px 5px;
+    padding: 5px;
+}
+
+header.site-header menu.site-menu > li:hover ul li {
+    list-style-type: none;
+}
+
+header.site-header menu.site-menu > li:hover ul li:before {
+    content: "\0025BB";
+    margin-right: 5px;
+}
+
 h1.brand {
     font-size: 48pt;
     font-family: Kis Classico SC, serif;
+}
+
+section.site-content > header {
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 5px;
+}
+
+section.site-content > header > h1 {
+    font-size: 36pt;
+    font-family: Kis Classico SC, serif;
+    word-break: break-word;
 }
 
 .wrapper {
@@ -104,7 +169,7 @@ h1.brand {
 }
 
 .blog-post header h1 {
-    font-size: 36pt;
+    font-size: 32pt;
     font-family: Kis Classico SC, serif;
     word-break: break-word;
 }
@@ -146,6 +211,10 @@ h1 a:active {
 
 .blog-post .text a:hover, .blog-post .text a:active {
     color: #0080FF;
+}
+
+.blog-post .text p {
+    margin: .5em 0;
 }
 
 .blog-post footer {
@@ -207,4 +276,8 @@ footer.site-footer {
     text-align: right;
     font-family: Kis Classico SC, serif;
     font-size: 14pt;
+}
+
+[class^="note-float-"] {
+    margin: 5px;
 }

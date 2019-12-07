@@ -1,0 +1,43 @@
+{% apply spaceless %}
+    {% set icon = item.type == 1 ? 'folder'
+        : (item.type == -1 ? 'external'
+        : (item.type == 3 ? 'tags' : 'file outline')) %}
+
+    <div class="ui segment js-item" id="{{ item.id }}" data-type="{{ item.type }}">
+        <form method="post" action="{{ path('admin_menu_remove', {'id': item.id}) }}" id="remove-{{ item.id }}"></form>
+        <div class="ui right floated mini icon buttons">
+            {% if item.type == 1 %}
+                <button class="ui button" onclick="addMenuItem(this);return false;"
+                        formaction="{{ path('admin_menu_create_in', {'id': item.id}) }}"><i class="plus icon"></i>
+                </button>
+            {% endif %}
+            <button class="ui button" type="submit" form="remove-{{ item.id }}"
+                    onclick="return confirm('Do you really want to delete this item{{ item.type == 1 ? ' and all its children' }}?');">
+                <i
+                        class="trash icon"></i>
+            </button>
+        </div>
+
+        <p>
+            <i class="{{ icon }} icon"></i> {{ item.title }}
+            {% if item.type == -1 %}
+                <span class="secondary">Link target: {{ item.href }}{{ item.inNewWindow ? ' in new window' }}</span>
+            {% endif %}
+            {% if item.type == 2 %}
+                <span class="secondary">Page: <a href="{{ path('admin_pages_update', {'id': item.page.id}) }}"
+                                                 target="_blank">{{ item.page.title }}</a></span>
+            {% endif %}
+            {% if item.type == 3 %}
+                <span class="secondary">Posts with tag: {{ item.tag }}</span>
+            {% endif %}
+        </p>
+
+        {% if item.type == 1 %}
+            <div class="ui segments js-menu js-container menu-placeholder" data-type="folder" data-id="{{ item.id }}">
+                {% for child in item.children %}
+                    {{ include('admin/menu/_item.html.twig', {'item': child}) }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endapply %}

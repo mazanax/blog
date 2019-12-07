@@ -1,0 +1,100 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}{{ title }} — Admin Panel{% endblock %}
+
+{% block segment %}
+    {% for label, messages in app.flashes(['success', 'error']) %}
+        {% for message in messages %}
+            <div class="ui {{ label }} message">
+                <p>{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div class="ui tall stacked segment">
+        <h2 class="ui header">
+            {{ title }}
+            <a class="ui right floated primary button" href="{{ path('admin_posts_create', {"strategy": strategy}) }}"
+            >Add new</a>
+        </h2>
+
+        {{ pages_info(currentPage, posts.count, onPage) }}.
+    </div>
+
+    {% if posts is not empty %}
+        <div class="ui basic clearing segment no-margin no-padding">
+            {{ paginate(currentPage, posts.count, onPage, 'right', true) }}
+
+            <div class="ui basic left floated segment">
+                <form method="POST" action="{{ path('admin_toggle_posts_previews') }}" class="ui form" id="list-config">
+                    <div class="inline field">
+                        <div class="ui toggle checkbox">
+                            <input id="checkbox" type="checkbox" tabindex="0"
+                                   class="hidden" {{ hidePreviews ? 'checked' }}>
+                            <label for="checkbox">Hide previews</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% for post in posts %}
+            {% if strategy == 'scheduled' %}
+                <form action="{{ path('admin_posts_publish', {'id': post.id, 'strategy': strategy}) }}"
+                      method="POST" id="publish-post-{{ post.id }}"></form>
+            {% endif %}
+            <form action="{{ path('admin_posts_remove', {'id': post.id, 'strategy': strategy}) }}"
+                  method="POST" id="remove-post-{{ post.id }}"></form>
+
+            <div class="ui stacked segments">
+                <div class="ui clearing blue segment text-wrap">
+                    <div class="ui right floated icon buttons">
+                        {% if strategy == 'scheduled' %}
+                            <button class="ui mini button" type="submit" form="publish-post-{{ post.id }}"
+                                    onclick="return confirm('Do you really want to publish this post?');"><i
+                                        class="paper plane icon"></i></button>
+                        {% endif %}
+                        <a class="ui mini button"
+                           href="{{ path('admin_posts_update', {'id': post.id, 'strategy': strategy}) }}"><i
+                                    class="edit icon"></i></a>
+                        <button class="ui mini button" type="submit" form="remove-post-{{ post.id }}"
+                                onclick="return confirm('Do you really want to delete this post?');"><i
+                                    class="trash icon"></i></button>
+                    </div>
+
+                    #{{ post.id }}&nbsp;<a href="{{ path('blog_post', {'id': post.id, 'url': post.url}) }}"
+                                           target="_blank"
+                                           class="ui header">{{ post.title }}
+                        <div class="sub header">{{ path('blog_post', {'id': post.id, 'url': post.url}) }}</div>
+                    </a>
+                </div>
+                {% if not hidePreviews %}
+                    <div class="ui segment text-wrap">
+                        {{ post.preview|raw }}
+                    </div>
+                {% endif %}
+                <div class="ui segment">
+                    <b>Created At:</b> {{ post.createdAt|date('Y-m-d H:i') }} |
+                    <b>Published At:</b> {{ post.publishedAt|date('Y-m-d H:i') }}
+                </div>
+            </div>
+        {% endfor %}
+
+        {{ paginate(currentPage, posts.count, onPage) }}
+    {% else %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="file outline icon"></i>
+                We don't have any posts matching your query
+            </div>
+            <div class="inline">
+                <a class="ui primary button" href="{{ path('admin_posts_create', {"strategy": strategy}) }}">Add
+                    Post</a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-posts-list') }}
+{% endblock %}

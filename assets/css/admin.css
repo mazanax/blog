@@ -1,0 +1,76 @@
+.wrapper {
+    margin: 10px;
+}
+
+.text-wrap {
+    word-break: break-word;
+}
+
+.top-menu {
+    position: relative;
+    z-index: 2;
+}
+
+.fixed-menu {
+    position: fixed;
+    top: 0;
+}
+
+.fixed-menu .menu-title {
+    height: 42px;
+    padding: 10px;
+    z-index: 1;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+.no-horizontal-padding {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.menu-placeholder {
+    min-height: 30px;
+}
+
+.menu-placeholder:empty {
+    background: #e0e1e2 none;
+}
+
+.menu-placeholder .segment p {
+    padding: 0.4em;
+}
+
+span.secondary {
+    color: #c0c0c0;
+}
+
+#loader {
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+[class^="note-float-"] {
+    margin: 5px;
+}
+
+.simple-tags {
+    margin: 1em 0 !important;
+}
+
+.simple-tags > ul > li > a {
+    cursor: pointer !important;
+}

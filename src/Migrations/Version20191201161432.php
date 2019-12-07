@@ -30,7 +30,7 @@ final class Version20191201161432 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql',
             'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE SCHEMA public');
+        $this->addSql('CREATE SCHEMA IF NOT EXISTS public');
         $this->addSql('DROP SEQUENCE post_id_seq CASCADE');
         $this->addSql('DROP TABLE post');
     }

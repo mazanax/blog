@@ -29,6 +29,8 @@ services:
         restart: always
         depends_on:
             - code
+        volumes:
+            - ../uploads:/var/www/html/public/uploads
         volumes_from:
             - code
         links:

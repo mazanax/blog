@@ -12,5 +12,10 @@
     "dev": "encore dev",
     "watch": "encore dev --watch",
     "build": "encore production --progress"
+  },
+  "dependencies": {
+    "jquery": "^3.4.1",
+    "sortablejs": "^1.10.2",
+    "tags": "https://github.com/mazanax/simple-tags#master"
   }
 }

@@ -1,0 +1,61 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block stylesheets %}
+    <link href="/dist/vendor/summernote-lite.css" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/dist/vendor/summernote-lite.min.js"></script>
+    <script>
+        $('.js-wysiwyg-editor').each((_, el) => {
+            let height = $(el).hasClass('wysiwyg-small') ? 200 :
+                $(el).hasClass('wysiwyg-large') ? 450 : 300;
+
+            $(el).summernote({
+                minHeight: height,
+                width: 1005,
+                toolbar: [
+                    ['styles', ['style']],
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview']],
+                ],
+                callbacks: {
+                    onImageUpload: function (files) {
+                        const $this = $(this);
+
+                        $(files).each(function () {
+                            let file = this;
+                            let data = new FormData();
+
+                            data.append('image', file);
+
+                            $('#loader').show();
+
+                            $.ajax({
+                                data: data,
+                                type: 'POST',
+                                url: '{{ path('admin_upload_image') }}',
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                success: function (url) {
+                                    $this.summernote('insertImage', url);
+                                },
+                                error: function (jqXHR, textStatus, err) {
+                                    alert('Image uploading: ' + err);
+                                },
+                                complete: () => {
+                                    $('#loader').hide();
+                                }
+                            });
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
