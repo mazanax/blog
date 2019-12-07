@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Build images
-        run: docker-compose build
+        run: docker-compose -f docker-compose.build.yml build
       - name: Authorize in registry
         run: docker login $DOCKER_REGISTRY_URL --username $DOCKER_USERNAME --password "$DOCKER_PASSWORD"
         env:
