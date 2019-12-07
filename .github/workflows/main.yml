@@ -15,7 +15,7 @@ jobs:
         uses: horochx/deploy-via-scp@master
         with:
           local: "./assets/html/error502.html"
-          remote: ${{ secrets.TARGET_HOST_DESTINATION_FOLDER }}/../
+          remote: /var/www/html/
           host: ${{ secrets.TARGET_HOST }}
           user: ${{ secrets.TARGET_HOST_USERNAME }}
           port: 22
