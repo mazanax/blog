@@ -1,36 +1,52 @@
-# this is docker-compose.yml for development
-# if you want to deploy application to production use docker-compose.prod.yml
 version: "2.1"
 services:
-  nginx:
-    build:
-      dockerfile: ./config/docker/nginx/Dockerfile
-      context: .
-    container_name: blog_nginx
-    restart: always
-    volumes:
-      - .:/var/www/html
-    links:
-      - fpm
-    ports:
-      - ${NGINX_PORT:-88}:80
-  fpm:
-    build:
-      dockerfile: ./config/docker/fpm/Dockerfile
-      context: .
-    container_name: blog_php
-    restart: always
-    volumes:
-      - .:/var/www/html
-    links:
-      - pgsql
-  pgsql:
-    image: fintrace/postgres-uuid
-    container_name: blog_postgres
-    restart: always
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER:-root}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-root}
-      - POSTGRES_DB=${POSTGRES_DB:-blog}
+    code:
+        build:
+            dockerfile: ./config/docker/code/Dockerfile
+            context: .
+            args:
+                - APP_ENV=${APP_ENV:-prod}
+        container_name: blog_code
+        depends_on:
+            - pgsql
+    nginx:
+        build:
+            dockerfile: ./config/docker/nginx/Dockerfile
+            context: .
+        container_name: blog_nginx
+        restart: always
+        volumes_from:
+            - code:ro
+        depends_on:
+            - code
+        links:
+            - fpm
+        ports:
+            - ${NGINX_PORT:-88}:80
+    fpm:
+        build:
+            dockerfile: ./config/docker/fpm/Dockerfile
+            context: .
+        environment:
+            - APP_ENV=${APP_ENV:-prod}
+            - POSTGRES_USER=${POSTGRES_USER:-root}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-root}
+            - POSTGRES_DB=${POSTGRES_DB:-blog}
+        container_name: blog_php
+        restart: always
+        depends_on:
+            - code
+        volumes_from:
+            - code
+        links:
+            - pgsql
+    pgsql:
+        image: fintrace/postgres-uuid
+        container_name: blog_postgres
+        restart: always
+        ports:
+            - 5432:5432
+        environment:
+            - POSTGRES_USER=${POSTGRES_USER:-root}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-root}
+            - POSTGRES_DB=${POSTGRES_DB:-blog}
