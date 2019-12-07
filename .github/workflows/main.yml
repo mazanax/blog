@@ -21,7 +21,7 @@ jobs:
           port: 22
           key: ${{ secrets.TARGET_HOST_KEY }}
       - name: Build images
-        run: docker-compose build
+        run: sudo docker-compose build
       - name: Authorize in registry
         run: docker login $DOCKER_REGISTRY_URL --username $DOCKER_USERNAME --password "$DOCKER_PASSWORD"
         env:
