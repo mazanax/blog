@@ -11,6 +11,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+      - name: Refresh error502 page file
+        uses: horochx/deploy-via-scp@master
+        with:
+          local: "./assets/html/error502.html"
+          remote: ${{ secrets.TARGET_HOST_DESTINATION_FOLDER }}/../
+          host: ${{ secrets.TARGET_HOST }}
+          user: ${{ secrets.TARGET_HOST_USERNAME }}
+          port: 22
+          key: ${{ secrets.TARGET_HOST_KEY }}
       - name: Build images
         run: docker-compose -f docker-compose.build.yml build
       - name: Authorize in registry
