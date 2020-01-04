@@ -2,6 +2,13 @@
 
 {% block title %}{{ post.title }} — {{ parent() }}{% endblock %}
 
+{% block meta %}
+    <meta property="og:title" content="{{ post.title }}">
+    <meta property="og:description" content="{{ post.text|striptags|slice(0, 297) }}...">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ url('blog_post', {'id': post.id, 'url': post.url}) }}">
+{% endblock %}
+
 {% block body %}
     {{ include('blog/_post.html.twig', {post: post, text: post.text, withLink: false, withShareButtons: true}) }}
 {% endblock %}
