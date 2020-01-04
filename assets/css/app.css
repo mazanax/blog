@@ -1,6 +1,6 @@
 @font-face {
-    font-family: Kis Classico SC;
-    src: url(../fonts/KisClassicoSC.ttf);
+    font-family: Vienna Convention;
+    src: url(../fonts/Vienna-Convention-1.otf);
 }
 
 @font-face {
@@ -75,7 +75,7 @@ header.site-header menu.site-menu > li ul {
 }
 
 header.site-header menu.site-menu > li a {
-    font-family: Kis Classico SC, serif;
+    font-family: Vienna Convention, serif;
     font-size: 14pt;
     color: #000;
     text-decoration: none;
@@ -108,7 +108,7 @@ header.site-header menu.site-menu > li:hover ul li:before {
 
 h1.brand {
     font-size: 48pt;
-    font-family: Kis Classico SC, serif;
+    font-family: Vienna Convention, serif;
 }
 
 section.site-content > header {
@@ -119,7 +119,7 @@ section.site-content > header {
 
 section.site-content > header > h1 {
     font-size: 36pt;
-    font-family: Kis Classico SC, serif;
+    font-family: Vienna Convention, serif;
     word-break: break-word;
 }
 
@@ -170,7 +170,7 @@ section.site-content > header > h1 {
 
 .blog-post header h1 {
     font-size: 32pt;
-    font-family: Kis Classico SC, serif;
+    font-family: Vienna Convention, serif;
     word-break: break-word;
 }
 
@@ -188,7 +188,7 @@ h1 a:active {
 .blog-post header time {
     float: right;
     text-align: right;
-    font-family: Kis Classico SC, serif;
+    font-family: Vienna Convention, serif;
     font-size: 12pt;
 }
 
@@ -242,7 +242,7 @@ ul.pagination {
     padding: 25px 0 0;
     list-style-type: none;
     font-size: 14pt;
-    font-family: Kis Classico SC, serif;
+    font-family: Vienna Convention, serif;
 }
 
 ul.pagination li {
@@ -274,7 +274,7 @@ ul.pagination a:hover, ul.pagination a:active {
 footer.site-footer {
     margin: 25px 0 10px;
     text-align: right;
-    font-family: Kis Classico SC, serif;
+    font-family: Vienna Convention, serif;
     font-size: 14pt;
 }
 
