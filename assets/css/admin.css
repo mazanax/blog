@@ -74,3 +74,9 @@ span.secondary {
 .simple-tags > ul > li > a {
     cursor: pointer !important;
 }
+
+.note-editor .note-editing-area .note-editable {
+    line-height: 1.25;
+    font-size: 12pt;
+    font-family: PT Serif, serif;
+}
