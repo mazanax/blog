@@ -2,6 +2,11 @@ controllers:
     resource: ../../src/Controller/
     type: annotation
 
+admin:
+    resource: ../../src/Controller/Admin/
+    prefix: /admin
+    type: annotation
+
 admin_logout:
     path: /admin/logout
     methods: GET
