@@ -8,10 +8,12 @@ services:
     nginx:
         image: hub.mazanax.ru/blog_nginx:latest
         container_name: blog_nginx
+        depends_on:
+          - code
+        volumes:
+          - ../uploads:/var/www/html/public/uploads
         volumes_from:
             - code:ro
-        depends_on:
-            - code
         links:
             - fpm
         ports:
