@@ -17,7 +17,7 @@ $(function () {
     let pathParts = currentPath.split('/');
     let selected = false;
 
-    while (pathParts && !selected) {
+    while (pathParts.length && !selected) {
         menuItems.each((_, el) => {
             let $item = $(el);
 
