@@ -36,6 +36,7 @@ COPY --from=builder /var/www/html /var/www/html
 
 RUN apk add --update --no-cache nodejs --repository http://dl-3.alpinelinux.org/alpine/v3.10/main && \
     apk add --update --no-cache yarn --repository http://dl-3.alpinelinux.org/alpine/v3.10/community && \
+    apk add --update --no-cache git && \
     yarn install --cwd=/var/www/html && \
     yarn run --cwd=/var/www/html encore production
 
