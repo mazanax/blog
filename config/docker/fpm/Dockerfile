@@ -1,5 +1,7 @@
 FROM php:7.2-fpm-alpine
 
+COPY ./config/docker/fpm/php.ini /usr/local/etc/php/php.ini
+
 WORKDIR /var/www/html
 
 RUN apk update && apk add \
