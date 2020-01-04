@@ -102,18 +102,35 @@
         </div>
 
         <div class="green card">
-            <div class="content">
-                <div class="header">Recently Published Posts</div>
-            </div>
-            {% for item in recent_posts %}
+            {% if recent_posts is not empty %}
                 <div class="content">
-                    <a href="{{ path('admin_posts_update', {'strategy': 'published', 'id': item.id}) }}"
-                       class="header">{{ item.title }}</a>
-                    <div class="meta">{{ item.publishedAt|date('M j, Y h:i A') }}</div>
-                    <div class="description"><p></p></div>
+                    <div class="header">Recently Published Posts</div>
                 </div>
+                {% for item in recent_posts %}
+                    <div class="content">
+                        <a href="{{ path('admin_posts_update', {'strategy': 'published', 'id': item.id}) }}"
+                           class="header">{{ item.title }}</a>
+                        <div class="meta">{{ item.publishedAt|date('M j, Y h:i A') }}</div>
+                        <div class="description"><p></p></div>
+                    </div>
 
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                <div class="content">
+                    <div class="header">Recently Published Posts</div>
+                    <div class="ui basic placeholder segment">
+                        <div class="ui icon header">
+                            <i class="file outline icon"></i>
+                            There are no published posts yet.
+                        </div>
+                        <a class="ui primary button"
+                           href="{{ path('admin_posts_create', {'strategy': 'published'}) }}">
+                            <i class="add icon"></i>
+                            Add new
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
 
             <a class="ui bottom attached basic button"
                href="{{ path('admin_posts_strategy', {'strategy': 'published'}) }}">
