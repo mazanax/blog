@@ -89,7 +89,7 @@ final class PostDTO
         $dto->preview = $post->getPreview();
         $dto->text = $post->getText();
         try {
-            $dto->publishedAt = $post->getPublishedAt() ?: new DateTimeImmutable('now');
+            $dto->publishedAt = $post->getPublishedAt();
         } catch (Exception $e) {
             $dto->publishedAt = null;
         }

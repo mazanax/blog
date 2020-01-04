@@ -70,7 +70,7 @@
                 </div>
                 {% if not hidePreviews %}
                     <div class="ui segment text-wrap">
-                        {{ post.preview|raw }}
+                        {{ post.preview|default(post.text)|raw }}
                     </div>
                 {% endif %}
                 <div class="ui segment">

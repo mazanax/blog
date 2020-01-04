@@ -8,5 +8,5 @@ use App\Entity\PostTag;
 
 interface PostTagFactoryInterface
 {
-    public function create(Post $post, string $tag, int $order): PostTag;
+    public function create(Post $post, string $tag): PostTag;
 }

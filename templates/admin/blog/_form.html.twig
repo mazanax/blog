@@ -11,7 +11,11 @@
 {% block _post_publishedAt_row %}
     <div class="four wide field {{ errors is not empty ? 'error' }}">
         {{ form_label(form) }}
-        {{ form_widget(form) }}
+        <div class="three fields">
+            {{ form_widget(form.date) }}
+            {{ form_widget(form.time.hour) }}
+            {{ form_widget(form.time.minute) }}
+        </div>
         {{ form_errors(form) }}
     </div>
 {% endblock %}

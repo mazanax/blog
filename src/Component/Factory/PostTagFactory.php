@@ -31,11 +31,10 @@ class PostTagFactory implements PostTagFactoryInterface
     /**
      * @param Post   $post
      * @param string $tag
-     * @param int    $order
      *
      * @return PostTag
      */
-    public function create(Post $post, string $tag, int $order): PostTag
+    public function create(Post $post, string $tag): PostTag
     {
         $tagEntity = $this->tagRepository->findByName($tag)
                      ?? $this->tagFactory->create($tag);
@@ -43,7 +42,6 @@ class PostTagFactory implements PostTagFactoryInterface
         $postTag = new PostTag();
         $postTag->setPost($post);
         $postTag->setTag($tagEntity);
-        $postTag->setOrder($order);
 
         return $postTag;
     }

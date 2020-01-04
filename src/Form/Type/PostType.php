@@ -21,7 +21,10 @@ class PostType extends AbstractType
             ->add('title', TextType::class)
             ->add('url', TextType::class)
             ->add('publishedAt', DateTimeType::class, [
-                'widget' => 'single_text'
+                'required' => false,
+                'date_widget' => 'single_text',
+                'time_widget' => 'text',
+                'with_seconds' => false
             ])
             ->add('preview', TextareaType::class, [
                 'required' => false,
