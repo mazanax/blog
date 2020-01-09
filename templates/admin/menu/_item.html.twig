@@ -3,7 +3,7 @@
         : (item.type == -1 ? 'external'
         : (item.type == 3 ? 'tags' : 'file outline')) %}
 
-    <div class="ui segment js-item" id="{{ item.id }}" data-type="{{ item.type }}">
+    <div class="ui segment js-item" id="{{ item.id }}">
         <form method="post" action="{{ path('admin_menu_remove', {'id': item.id}) }}" id="remove-{{ item.id }}"></form>
         <div class="ui right floated mini icon buttons">
             {% if item.type == 1 %}

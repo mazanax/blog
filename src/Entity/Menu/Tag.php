@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Menu;
 
+use App\Component\Menu\Form\DTO\ItemDTO;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,22 +28,18 @@ class Tag extends Item
     }
 
     /**
-     * @param \App\Entity\Tag $tag
-     *
-     * @return Tag
-     */
-    public function setTag(\App\Entity\Tag $tag): Tag
-    {
-        $this->tag = $tag;
-
-        return $this;
-    }
-
-    /**
      * @return int
      */
     public function getType(): int
     {
         return self::TAG;
+    }
+
+    /**
+     * @param ItemDTO $dto
+     */
+    protected function fillChildProperties(ItemDTO $dto): void
+    {
+        $this->tag = $dto->tag;
     }
 }

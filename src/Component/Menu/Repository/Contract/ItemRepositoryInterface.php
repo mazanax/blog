@@ -19,5 +19,10 @@ interface ItemRepositoryInterface
 
     public function persist(Item $item): void;
 
+    /**
+     * @param Item[] $items
+     */
+    public function batchPersist(array $items): void;
+
     public function flush(): void;
 }

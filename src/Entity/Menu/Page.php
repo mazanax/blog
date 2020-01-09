@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Menu;
 
+use App\Component\Menu\Form\DTO\ItemDTO;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,22 +28,18 @@ class Page extends Item
     }
 
     /**
-     * @param \App\Entity\Page $page
-     *
-     * @return Page
-     */
-    public function setPage(\App\Entity\Page $page): Page
-    {
-        $this->page = $page;
-
-        return $this;
-    }
-
-    /**
      * @return int
      */
     public function getType(): int
     {
         return self::PAGE;
+    }
+
+    /**
+     * @param ItemDTO $dto
+     */
+    protected function fillChildProperties(ItemDTO $dto): void
+    {
+        $this->page = $dto->page;
     }
 }

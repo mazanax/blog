@@ -13,39 +13,34 @@ use RuntimeException;
 
 class ItemRepository extends ServiceEntityRepository implements ItemRepositoryInterface
 {
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Item::class);
     }
 
-    /**
-     * @return Item[]
-     */
     public function getTopItems(): array
     {
-        return $this->findBy(['parent' => null], ['order' => 'ASC']);
+        return $this->findBy(['parent' => null], ['sortableRank' => 'ASC']);
     }
 
-    /**
-     * @return Item[]
-     */
     public function all(): array
     {
-        return $this->findBy([], ['order' => 'ASC']);
+        return $this->findBy([], ['sortableRank' => 'ASC']);
     }
 
-    /**
-     * @param Item $item
-     */
     public function persist(Item $item): void
     {
         try {
             $this->getEntityManager()->persist($item);
         } catch (ORMException $exception) {
             throw new RuntimeException('Error during persist menu item: ' . $exception->getMessage(), 0, $exception);
+        }
+    }
+
+    public function batchPersist(array $items): void
+    {
+        foreach ($items as $item) {
+            $this->persist($item);
         }
     }
 

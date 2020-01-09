@@ -3,26 +3,30 @@ declare(strict_types=1);
 
 namespace App\Component\Menu\Form\Type;
 
+use App\Component\Menu\Form\DTO\SortedMenuItem;
 use App\Entity\Menu\Item;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OrderItemType extends AbstractType
+class SortedMenuItemType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('id', TextType::class)
-            ->add('type', ChoiceType::class, [
-                'choices' => array_flip(Item::TYPES),
-            ])
             ->add('parent', EntityType::class, [
                 'class' => Item::class,
                 'choice_label' => 'id'
             ])
-            ->add('order', NumberType::class);
+            ->add('sortableRank', IntegerType::class);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefault('data_class', SortedMenuItem::class);
+        $resolver->setDefault('csrf_protection', false);
     }
 }

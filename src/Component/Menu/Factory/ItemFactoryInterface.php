@@ -8,5 +8,5 @@ use App\Entity\Menu\Item;
 
 interface ItemFactoryInterface
 {
-    public function createFromDTO(ItemDTO $dto): Item;
+    public function createByDTO(ItemDTO $dto): Item;
 }

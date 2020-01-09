@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Menu;
 
+use App\Component\Menu\Form\DTO\ItemDTO;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,18 +34,6 @@ class External extends Item
     }
 
     /**
-     * @param string $href
-     *
-     * @return External
-     */
-    public function setHref(string $href): External
-    {
-        $this->href = $href;
-
-        return $this;
-    }
-
-    /**
      * @return bool
      */
     public function isInNewWindow(): bool
@@ -53,22 +42,19 @@ class External extends Item
     }
 
     /**
-     * @param bool $inNewWindow
-     *
-     * @return External
-     */
-    public function setInNewWindow(bool $inNewWindow): External
-    {
-        $this->inNewWindow = $inNewWindow;
-
-        return $this;
-    }
-
-    /**
      * @return int
      */
     public function getType(): int
     {
         return self::EXTERNAL;
+    }
+
+    /**
+     * @param ItemDTO $dto
+     */
+    protected function fillChildProperties(ItemDTO $dto): void
+    {
+        $this->href = $dto->href;
+        $this->inNewWindow = $dto->inNewWindow;
     }
 }

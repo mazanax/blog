@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Menu;
 
+use App\Component\Menu\Form\DTO\ItemDTO;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,6 +25,13 @@ abstract class Item
         self::EXTERNAL => 'External Link',
         self::FOLDER => 'Folder',
         self::PAGE => 'Static Page',
+        self::TAG => 'Tag',
+    ];
+
+    public const NAMES = [
+        self::EXTERNAL => 'External',
+        self::FOLDER => 'Folder',
+        self::PAGE => 'Page',
         self::TAG => 'Tag',
     ];
 
@@ -55,7 +63,7 @@ abstract class Item
      * @var Item[]
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="parent", cascade={"persist", "remove"})
-     * @ORM\OrderBy({"order"="ASC"})
+     * @ORM\OrderBy({"sortableRank"="ASC"})
      */
     private $children;
 
@@ -64,84 +72,47 @@ abstract class Item
      *
      * @ORM\Column(type="integer", name="`order`")
      */
-    private $order;
+    private $sortableRank;
 
     public function __construct()
     {
         $this->children = new ArrayCollection();
     }
 
-    /**
-     * @return int
-     */
     abstract public function getType(): int;
 
-    /**
-     * @return string
-     */
     public function getId(): ?string
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     *
-     * @return Item
-     */
-    public function setTitle(string $title): Item
+    public function getSortableRank(): ?int
     {
-        $this->title = $title;
+        return $this->sortableRank;
+    }
+
+    public function setSortableRank(?int $sortableRank): Item
+    {
+        $this->sortableRank = $sortableRank;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getOrder(): ?int
-    {
-        return $this->order;
-    }
-
-    /**
-     * @param int $order
-     *
-     * @return Item
-     */
-    public function setOrder(?int $order): Item
-    {
-        $this->order = $order;
-
-        return $this;
-    }
-
-    /**
-     * @return Item
-     */
-    public function getParent(): ?Item
-    {
-        return $this->parent;
-    }
-
-    /**
-     * @param Item $parent
-     *
-     * @return Item
-     */
     public function setParent(?Item $parent): Item
     {
         $this->parent = $parent;
 
         return $this;
+    }
+
+    public function getParent(): ?Item
+    {
+        return $this->parent;
     }
 
     /**
@@ -152,27 +123,14 @@ abstract class Item
         return $this->children;
     }
 
-    /**
-     * @param Collection $children
-     *
-     * @return Item
-     */
-    public function setChildren(Collection $children): Item
+    public function fillFromDTO(ItemDTO $dto): void
     {
-        $this->children = $children;
+        $this->title = $dto->title;
+        $this->parent = $dto->parent;
+        $this->sortableRank = $dto->sortableRank;
 
-        return $this;
+        $this->fillChildProperties($dto);
     }
 
-    /**
-     * @param Item $children
-     *
-     * @return Item
-     */
-    public function addChild(Item $children): Item
-    {
-        $this->children->add($children);
-
-        return $this;
-    }
+    abstract protected function fillChildProperties(ItemDTO $dto): void;
 }

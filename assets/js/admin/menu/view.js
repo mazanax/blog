@@ -77,8 +77,7 @@ menus.forEach(el => {
                     .map((idx, el) => {
                         return {
                             id: $(el).attr('id'),
-                            type: $(el).data('type'),
-                            order: idx + 1,
+                            sortableRank: idx + 1,
                             parent: $(el).closest('.js-container').data('id') || null
                         };
                     })
@@ -86,10 +85,9 @@ menus.forEach(el => {
 
                 const formData = {};
                 items.forEach((item, idx) => {
-                    formData['order[items][' + idx + '][id]'] = item.id;
-                    formData['order[items][' + idx + '][type]'] = item.type;
-                    formData['order[items][' + idx + '][order]'] = item.order;
-                    formData['order[items][' + idx + '][parent]'] = item.parent;
+                    formData['sorted_menu[items][' + idx + '][id]'] = item.id;
+                    formData['sorted_menu[items][' + idx + '][sortableRank]'] = item.sortableRank;
+                    formData['sorted_menu[items][' + idx + '][parent]'] = item.parent;
                 });
 
                 $('#loader').show();

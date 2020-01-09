@@ -28,16 +28,16 @@ class ItemFactory implements ItemFactoryInterface
      *
      * @return Item
      */
-    public function createFromDTO(ItemDTO $dto): Item
+    public function createByDTO(ItemDTO $dto): Item
     {
         foreach ($this->concreteFactories as $factory) {
-            if (!$factory->supports($dto->getType())) {
+            if (!$factory->supports($dto->type)) {
                 continue;
             }
 
-            return $factory->createFromDTO($dto);
+            return $factory->create();
         }
 
-        throw new LogicException(sprintf('[ItemFactory] Unknown menu item %d', $dto->getType()));
+        throw new LogicException(sprintf('[ItemFactory] Unknown menu item %d', $dto->type));
     }
 }

@@ -5,7 +5,7 @@ namespace App\Component\Menu;
 
 use App\Entity\Menu\Item;
 
-class MenuSorter implements MenuSorterInterface
+class Sorter implements SorterInterface
 {
     /**
      * @param Item[] $items
@@ -21,13 +21,13 @@ class MenuSorter implements MenuSorterInterface
 
         foreach ($groupedByParent as &$groupItems) {
             usort($groupItems, static function (Item $first, Item $second) {
-                return $first->getOrder() < $second->getOrder() ? -1 : 1;
+                return $first->getSortableRank() < $second->getSortableRank() ? -1 : 1;
             });
         }
         unset($groupItems);
 
         foreach ($items as $item) {
-            if (null !== $item->getOrder()) {
+            if (null !== $item->getSortableRank()) {
                 continue;
             }
 
@@ -35,14 +35,14 @@ class MenuSorter implements MenuSorterInterface
 
             /** @var Item $lastElementInGroup */
             $lastElementInGroup = end($groupedByParent[$parent]) ?? $item->getParent();
-            $item->setOrder($lastElementInGroup->getOrder() + 1);
+            $item->setSortableRank($lastElementInGroup->getSortableRank() + 1);
 
             foreach ($items as $nextItem) {
-                if ($nextItem === $item || $nextItem->getOrder() < $item->getOrder()) {
+                if ($nextItem === $item || $nextItem->getSortableRank() < $item->getSortableRank()) {
                     continue;
                 }
 
-                $nextItem->setOrder($nextItem->getOrder() + 1);
+                $nextItem->setSortableRank($nextItem->getSortableRank() + 1);
             }
         }
     }
