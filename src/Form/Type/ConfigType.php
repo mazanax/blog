@@ -16,7 +16,7 @@ class ConfigType extends AbstractType
     {
         $builder->add('name', TextType::class)
             ->add('slug', TextType::class)
-            ->add('content', TextareaType::class);
+            ->add('content', TextareaType::class, ['required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
