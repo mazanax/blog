@@ -11,23 +11,13 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class UniqueEntityDTOValidator extends ConstraintValidator
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private $entityManager;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @param mixed      $value
-     * @param Constraint $constraint
-     */
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueEntityDTO) {

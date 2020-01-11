@@ -12,19 +12,11 @@ use RuntimeException;
 
 class FileHashRepository extends ServiceEntityRepository implements FileHashRepositoryInterface
 {
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, FileHash::class);
     }
 
-    /**
-     * @param string $hash
-     *
-     * @return FileHash|null
-     */
     public function findByHash(string $hash): ?FileHash
     {
         /** @var FileHash|null $fileHash */
@@ -33,9 +25,6 @@ class FileHashRepository extends ServiceEntityRepository implements FileHashRepo
         return $fileHash;
     }
 
-    /**
-     * @param FileHash $fileHash
-     */
     public function persistAndFlush(FileHash $fileHash): void
     {
         try {

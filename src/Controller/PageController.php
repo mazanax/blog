@@ -15,11 +15,6 @@ class PageController extends AbstractController
 {
     /**
      * @Route("/{url<[-_a-zA-Z0-9]+>}", methods={"GET"}, name="page_view")
-     *
-     * @param PageRepositoryInterface $pageRepository
-     * @param string                  $url
-     *
-     * @return Response
      */
     public function view(PageRepositoryInterface $pageRepository, string $url): Response
     {

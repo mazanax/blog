@@ -13,22 +13,13 @@ use Twig\TwigFunction;
 
 class PaginationExtension extends AbstractExtension
 {
-    /**
-     * @var Environment
-     */
     private $twig;
 
-    /**
-     * @param Environment $twig
-     */
     public function __construct(Environment $twig)
     {
         $this->twig = $twig;
     }
 
-    /**
-     * @return TwigFunction[]
-     */
     public function getFunctions(): array
     {
         return [
@@ -38,19 +29,9 @@ class PaginationExtension extends AbstractExtension
     }
 
     /**
-     * @param int    $currentPage
-     * @param int    $totalElements
-     * @param int    $onPage
-     *
-     * @param string $position
-     *
-     * @param bool   $floated
-     *
-     * @return string
-     *
      * @throws LoaderError
-     * @throws RuntimeError
      * @throws SyntaxError
+     * @throws RuntimeError
      */
     public function renderPagination(
         int $currentPage,

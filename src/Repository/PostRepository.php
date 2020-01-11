@@ -14,21 +14,12 @@ use RuntimeException;
 
 class PostRepository extends ServiceEntityRepository implements PostRepositoryInterface
 {
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Post::class);
     }
 
-    /**
-     * @param int $offset
-     * @param int $limit
-     *
-     * @return QueryBuilder
-     */
-    public function createQueryBuilderForPublishedPosts(int $offset, int $limit = 10): QueryBuilder
+    public function createQueryBuilderForPublishedPosts(int $offset, int $limit): QueryBuilder
     {
         try {
             return $this->createQueryBuilder('p')
@@ -42,13 +33,7 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
         }
     }
 
-    /**
-     * @param int $offset
-     * @param int $limit
-     *
-     * @return QueryBuilder
-     */
-    public function createQueryBuilderForScheduledPosts(int $offset, int $limit = 10): QueryBuilder
+    public function createQueryBuilderForScheduledPosts(int $offset, int $limit): QueryBuilder
     {
         try {
             return $this->createQueryBuilder('p')
@@ -62,18 +47,8 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
         }
     }
 
-    /**
-     * @param array $tags
-     * @param int   $offset
-     * @param int   $limit
-     *
-     * @return QueryBuilder
-     */
-    public function createQueryBuilderForPublishedPostsWithTags(
-        array $tags,
-        int $offset,
-        int $limit = 10
-    ): QueryBuilder {
+    public function createQueryBuilderForPublishedPostsWithTags(array $tags, int $offset, int $limit): QueryBuilder
+    {
         try {
             return $this->createQueryBuilderForPublishedPosts($offset, $limit)
                 ->join('p.tags', 'pt')
@@ -85,18 +60,8 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
         }
     }
 
-    /**
-     * @param array $tags
-     * @param int   $offset
-     * @param int   $limit
-     *
-     * @return QueryBuilder
-     */
-    public function createQueryBuilderForScheduledPostsWithTags(
-        array $tags,
-        int $offset,
-        int $limit = 10
-    ): QueryBuilder {
+    public function createQueryBuilderForScheduledPostsWithTags(array $tags, int $offset, int $limit): QueryBuilder
+    {
         try {
             return $this->createQueryBuilderForScheduledPosts($offset, $limit)
                 ->join('p.tags', 'pt')
@@ -108,11 +73,6 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
         }
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Post
-     */
     public function findById(int $id): Post
     {
         /** @var Post $post */
@@ -121,9 +81,6 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
         return $post;
     }
 
-    /**
-     * @return int
-     */
     public function countPublished(): int
     {
         try {
@@ -138,9 +95,6 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
         }
     }
 
-    /**
-     * @return int
-     */
     public function countScheduled(): int
     {
         try {

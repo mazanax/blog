@@ -36,8 +36,6 @@ abstract class Item
     ];
 
     /**
-     * @var string
-     *
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
@@ -45,31 +43,23 @@ abstract class Item
     private $id;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=64)
      */
     private $title;
 
     /**
-     * @var Item
-     *
      * @ORM\ManyToOne(targetEntity="Item", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $parent;
 
     /**
-     * @var Item[]
-     *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="parent", cascade={"persist", "remove"})
      * @ORM\OrderBy({"sortableRank"="ASC"})
      */
     private $children;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer", name="`order`")
      */
     private $sortableRank;

@@ -11,17 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Folder extends Item
 {
-    /**
-     * @return int
-     */
     public function getType(): int
     {
         return self::FOLDER;
     }
 
-    /**
-     * @param ItemDTO $dto
-     */
     protected function fillChildProperties(ItemDTO $dto): void
     {
     }

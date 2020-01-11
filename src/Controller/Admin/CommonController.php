@@ -19,12 +19,6 @@ class CommonController extends AbstractController
 {
     /**
      * @Route("/", name="admin_index", methods={"GET"})
-     *
-     * @param PostRepositoryInterface $postRepository
-     * @param PostGetterInterface     $postGetter
-     * @param PageRepositoryInterface $pageRepository
-     *
-     * @return Response
      */
     public function index(
         PostRepositoryInterface $postRepository,
@@ -50,11 +44,6 @@ class CommonController extends AbstractController
 
     /**
      * @Route("/upload-image", name="admin_upload_image", methods={"POST"})
-     *
-     * @param FileUploaderInterface $uploader
-     * @param Request               $request
-     *
-     * @return Response
      */
     public function uploadImage(FileUploaderInterface $uploader, Request $request): Response
     {

@@ -12,17 +12,11 @@ use RuntimeException;
 
 class FileRepository extends ServiceEntityRepository implements FileRepositoryInterface
 {
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, File::class);
     }
 
-    /**
-     * @param File $file
-     */
     public function persistAndFlush(File $file): void
     {
         try {

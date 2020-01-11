@@ -10,24 +10,13 @@ use LogicException;
 
 class ItemFactory implements ItemFactoryInterface
 {
-    /**
-     * @var ConcreteItemFactoryInterface[]
-     */
     private $concreteFactories;
 
-    /**
-     * @param ConcreteItemFactoryInterface[] $concreteFactories
-     */
     public function __construct(ConcreteItemFactoryInterface ...$concreteFactories)
     {
         $this->concreteFactories = $concreteFactories;
     }
 
-    /**
-     * @param ItemDTO $dto
-     *
-     * @return Item
-     */
     public function createByDTO(ItemDTO $dto): Item
     {
         foreach ($this->concreteFactories as $factory) {

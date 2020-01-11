@@ -7,24 +7,13 @@ use RuntimeException;
 
 class PostListTitleGetter implements PostListTitleGetterInterface
 {
-    /**
-     * @var PostListTitleStrategyInterface[]
-     */
     private $strategies;
 
-    /**
-     * @param PostListTitleStrategyInterface[] $strategies
-     */
     public function __construct(PostListTitleStrategyInterface ...$strategies)
     {
         $this->strategies = $strategies;
     }
 
-    /**
-     * @param string $chosenStrategy
-     *
-     * @return string
-     */
     public function getTitle(string $chosenStrategy): string
     {
         foreach ($this->strategies as $strategy) {

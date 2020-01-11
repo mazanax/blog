@@ -7,11 +7,6 @@ use App\Entity\Tag;
 
 class TagFactory implements TagFactoryInterface
 {
-    /**
-     * @param string $name
-     *
-     * @return Tag
-     */
     public function create(string $name): Tag
     {
         $tag = new Tag();

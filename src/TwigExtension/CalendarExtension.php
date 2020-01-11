@@ -13,29 +13,16 @@ use Twig\TwigFunction;
 
 class CalendarExtension extends AbstractExtension
 {
-    /**
-     * @var Environment
-     */
     private $twig;
 
-    /**
-     * @var RequestStack
-     */
     private $requestStack;
 
-    /**
-     * @param RequestStack $requestStack
-     * @param Environment  $twig
-     */
     public function __construct(RequestStack $requestStack, Environment $twig)
     {
         $this->twig = $twig;
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * @return array
-     */
     public function getFunctions(): array
     {
         return [
@@ -44,11 +31,9 @@ class CalendarExtension extends AbstractExtension
     }
 
     /**
-     * @return string
-     *
      * @throws LoaderError
-     * @throws RuntimeError
      * @throws SyntaxError
+     * @throws RuntimeError
      */
     public function renderCalendar(): string
     {

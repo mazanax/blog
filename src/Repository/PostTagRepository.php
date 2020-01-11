@@ -15,20 +15,11 @@ use RuntimeException;
 
 class PostTagRepository extends ServiceEntityRepository implements PostTagRepositoryInterface
 {
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, PostTag::class);
     }
 
-    /**
-     * @param Post   $post
-     * @param string $name
-     *
-     * @return PostTag|null
-     */
     public function findByPostAndName(Post $post, string $name): ?PostTag
     {
         /** @var PostTag|null $postTag */
@@ -50,10 +41,6 @@ class PostTagRepository extends ServiceEntityRepository implements PostTagReposi
         return $postTag;
     }
 
-    /**
-     * @param Post  $post
-     * @param array $keep
-     */
     public function removeByPostExcept(Post $post, array $keep): void
     {
         $postTags = $this->findBy(['post' => $post]);

@@ -13,20 +13,10 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AddUserCommand extends Command
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private $entityManager;
 
-    /**
-     * @var UserPasswordEncoderInterface
-     */
     private $passwordEncoder;
 
-    /**
-     * @param EntityManagerInterface       $entityManager
-     * @param UserPasswordEncoderInterface $passwordEncoder
-     */
     public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
     {
         parent::__construct();
@@ -43,12 +33,6 @@ class AddUserCommand extends Command
             ->addOption('password', '', InputOption::VALUE_REQUIRED);
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $email = $input->getOption('email');

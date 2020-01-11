@@ -13,29 +13,16 @@ use Twig\TwigFunction;
 
 class MenuExtension extends AbstractExtension
 {
-    /**
-     * @var Environment
-     */
     private $twig;
 
-    /**
-     * @var ItemRepositoryInterface
-     */
     private $repository;
 
-    /**
-     * @param Environment             $twig
-     * @param ItemRepositoryInterface $repository
-     */
     public function __construct(Environment $twig, ItemRepositoryInterface $repository)
     {
         $this->twig = $twig;
         $this->repository = $repository;
     }
 
-    /**
-     * @return TwigFunction[]
-     */
     public function getFunctions(): array
     {
         return [
@@ -44,11 +31,9 @@ class MenuExtension extends AbstractExtension
     }
 
     /**
-     * @return string
-     *
      * @throws LoaderError
-     * @throws RuntimeError
      * @throws SyntaxError
+     * @throws RuntimeError
      */
     public function renderSiteMenu(): string
     {

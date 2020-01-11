@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Component\Filler\PageFillerInterface;
 use App\Entity\Page;
 use App\Form\DTO\PageDTO;
 use App\Form\Type\PageType;
@@ -19,20 +18,10 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PageController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private $entityManager;
 
-    /**
-     * @var int
-     */
     private $onPage;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     * @param int                    $onPage
-     */
     public function __construct(EntityManagerInterface $entityManager, int $onPage)
     {
         $this->entityManager = $entityManager;
@@ -41,11 +30,6 @@ class PageController extends AbstractController
 
     /**
      * @Route("/", name="admin_pages", methods={"GET"})
-     *
-     * @param PageRepositoryInterface $pageRepository
-     * @param Request                 $request
-     *
-     * @return Response
      */
     public function list(PageRepositoryInterface $pageRepository, Request $request): Response
     {
@@ -63,14 +47,8 @@ class PageController extends AbstractController
     /**
      * @Route("/create", name="admin_pages_create", defaults={"id"=null}, methods={"GET", "POST"})
      * @Route("/update/{id<\d+>}", name="admin_pages_update", methods={"GET", "POST"})
-     *
-     * @param Request             $request
-     * @param PageFillerInterface $filler
-     * @param Page|null           $page
-     *
-     * @return Response
      */
-    public function modify(Request $request, PageFillerInterface $filler, ?Page $page): Response
+    public function modify(Request $request, ?Page $page): Response
     {
         if (null === $page) {
             $page = new Page();
@@ -93,7 +71,7 @@ class PageController extends AbstractController
             );
         }
 
-        $filler->fillFromDto($page, $pageDTO);
+        $page->fillFromDTO($pageDTO);
         $this->entityManager->persist($page);
         $this->entityManager->flush();
 
@@ -111,10 +89,6 @@ class PageController extends AbstractController
 
     /**
      * @Route("/remove/{id<\d+>}", name="admin_pages_remove", methods={"POST"})
-     *
-     * @param Page $page
-     *
-     * @return Response
      */
     public function remove(Page $page): Response
     {

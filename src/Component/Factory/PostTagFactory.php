@@ -9,31 +9,16 @@ use App\Repository\Contract\TagRepositoryInterface;
 
 class PostTagFactory implements PostTagFactoryInterface
 {
-    /**
-     * @var TagRepositoryInterface
-     */
     private $tagRepository;
-    /**
-     * @var TagFactoryInterface
-     */
+
     private $tagFactory;
 
-    /**
-     * @param TagRepositoryInterface $tagRepository
-     * @param TagFactoryInterface    $tagFactory
-     */
     public function __construct(TagRepositoryInterface $tagRepository, TagFactoryInterface $tagFactory)
     {
         $this->tagRepository = $tagRepository;
         $this->tagFactory = $tagFactory;
     }
 
-    /**
-     * @param Post   $post
-     * @param string $tag
-     *
-     * @return PostTag
-     */
     public function create(Post $post, string $tag): PostTag
     {
         $tagEntity = $this->tagRepository->findByName($tag)

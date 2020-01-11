@@ -11,12 +11,6 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class StrategyValidator extends ConstraintValidator implements StrategyValidatorInterface
 {
-    /**
-     * Checks if the passed value is valid.
-     *
-     * @param mixed      $value The value that should be validated
-     * @param Constraint $constraint
-     */
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof StrategyConstraint || $this->isValid($value, $constraint)) {
@@ -32,12 +26,6 @@ class StrategyValidator extends ConstraintValidator implements StrategyValidator
             ->addViolation();
     }
 
-    /**
-     * @param                    $value
-     * @param StrategyConstraint $constraint
-     *
-     * @return bool
-     */
     public function isValid($value, StrategyConstraint $constraint): bool
     {
         return in_array($value, PostStrategy::ALLOWED_STRATEGIES, true);

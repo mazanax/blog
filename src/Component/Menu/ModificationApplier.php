@@ -17,7 +17,6 @@ class ModificationApplier implements ModificationApplierInterface
 
     /**
      * @param Item[]     $items
-     * @param SortedMenu $sortedMenu
      */
     public function batchApply(array $items, SortedMenu $sortedMenu): void
     {

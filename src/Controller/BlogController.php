@@ -14,14 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BlogController extends AbstractController
 {
-    /**
-     * @var int
-     */
     private $onPage;
 
-    /**
-     * @param int $onPage
-     */
     public function __construct(int $onPage)
     {
         $this->onPage = $onPage;
@@ -30,11 +24,6 @@ class BlogController extends AbstractController
     /**
      * @Route("/", methods={"GET"}, name="blog_list")
      * @Route("/page-{page<\d+>}", methods={"GET"}, name="blog_paginated_list")
-     *
-     * @param PostRepositoryInterface $postRepository
-     * @param int|null                $page
-     *
-     * @return Response
      */
     public function list(PostRepositoryInterface $postRepository, ?int $page = 1): Response
     {
@@ -54,13 +43,6 @@ class BlogController extends AbstractController
     /**
      * @Route("/tag/{tag}", methods={"GET"}, name="blog_tag_list")
      * @Route("/tag/{tag}/page-{page<\d+>}", methods={"GET"}, name="blog_tag_paginated_list")
-     *
-     * @param PostGetterInterface    $postGetter
-     * @param TagRepositoryInterface $tagRepository
-     * @param string                 $tag
-     * @param int|null               $page
-     *
-     * @return Response
      */
     public function tagList(
         PostGetterInterface $postGetter,
@@ -91,11 +73,6 @@ class BlogController extends AbstractController
 
     /**
      * @Route("/{id<\d+>}-{url<[-_a-zA-Z0-9]+>}", methods={"GET"}, name="blog_post")
-     *
-     * @param PostGetterInterface $postGetter
-     * @param int                 $id
-     *
-     * @return Response
      */
     public function view(PostGetterInterface $postGetter, int $id): Response
     {

@@ -24,14 +24,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class MenuController extends AbstractController
 {
-    /**
-     * @var ItemRepositoryInterface
-     */
     private $repository;
 
-    /**
-     * @param ItemRepositoryInterface $repository
-     */
     public function __construct(ItemRepositoryInterface $repository)
     {
         $this->repository = $repository;
@@ -39,8 +33,6 @@ class MenuController extends AbstractController
 
     /**
      * @Route("/", name="admin_menu", methods={"GET"})
-     *
-     * @return Response
      */
     public function view(): Response
     {
@@ -55,14 +47,6 @@ class MenuController extends AbstractController
     /**
      * @Route("/create/", name="admin_menu_create", methods={"GET", "POST"})
      * @Route("/create/{id<[-a-zA-Z0-9]+>}", name="admin_menu_create_in", methods={"GET", "POST"})
-     *
-     * @param ItemDTOFactoryInterface $DTOFactory
-     * @param ItemFactoryInterface    $itemFactory
-     * @param SorterInterface         $sorter
-     * @param Request                 $request
-     * @param Item|null               $parent
-     *
-     * @return Response
      */
     public function create(
         ItemDTOFactoryInterface $DTOFactory,
@@ -103,11 +87,6 @@ class MenuController extends AbstractController
 
     /**
      * @Route("/remove/{id<[-a-zA-Z0-9]+>}", name="admin_menu_remove", methods={"POST"})
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param Item                   $item
-     *
-     * @return Response
      */
     public function remove(EntityManagerInterface $entityManager, Item $item): Response
     {
@@ -121,12 +100,6 @@ class MenuController extends AbstractController
 
     /**
      * @Route("/reorder", name="menu_reorder", methods={"GET", "POST"})
-     *
-     * @param ModificationApplierInterface $modificationApplier
-     * @param SorterInterface              $sorter
-     * @param Request                      $request
-     *
-     * @return Response
      */
     public function reorder(
         ModificationApplierInterface $modificationApplier,

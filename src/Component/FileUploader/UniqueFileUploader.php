@@ -10,20 +10,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UniqueFileUploader implements FileUploaderInterface
 {
-    /**
-     * @var FileHashRepositoryInterface
-     */
     private $fileHashRepository;
 
-    /**
-     * @var FileUploader
-     */
     private $fileUploader;
 
-    /**
-     * @param FileHashRepositoryInterface $fileHashRepository
-     * @param FileUploader                $fileUploader
-     */
     public function __construct(
         FileHashRepositoryInterface $fileHashRepository,
         FileUploader $fileUploader
@@ -32,21 +22,11 @@ class UniqueFileUploader implements FileUploaderInterface
         $this->fileUploader = $fileUploader;
     }
 
-    /**
-     * @param UploadedFile $file
-     *
-     * @return bool
-     */
     public function isCanUpload(UploadedFile $file): bool
     {
         return $this->fileUploader->isCanUpload($file);
     }
 
-    /**
-     * @param UploadedFile $file
-     *
-     * @return File
-     */
     public function upload(UploadedFile $file): File
     {
         $hash = $this->calculateHash($file);
@@ -63,11 +43,6 @@ class UniqueFileUploader implements FileUploaderInterface
         return $fileEntity;
     }
 
-    /**
-     * @param UploadedFile $file
-     *
-     * @return string
-     */
     private function calculateHash(UploadedFile $file): string
     {
         return md5_file($file->getPathname());

@@ -7,7 +7,6 @@ use App\Entity\Post;
 use App\Entity\PostTag;
 use App\Validation\Constraint\UniqueEntityDTO;
 use DateTimeImmutable;
-use DateTimeInterface;
 use Exception;
 use RuntimeException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -17,14 +16,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class PostDTO
 {
-    /**
-     * @var int|null
-     */
     public $id;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=255)
      * @Assert\Regex(pattern="/^[\-_a-zA-Z0-9]+$/")
@@ -32,33 +26,21 @@ final class PostDTO
     public $url;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank()
      * @Assert\Length(max=255)
      */
     public $title;
 
-    /**
-     * @var string
-     */
     public $preview;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank()
      */
     public $text;
 
-    /**
-     * @var DateTimeInterface
-     */
     public $publishedAt;
 
     /**
-     * @var array
-     *
      * @Assert\All(
      *     @Assert\Type(type="string"),
      *     @Assert\Length(min=2, max=64)
@@ -75,11 +57,6 @@ final class PostDTO
         }
     }
 
-    /**
-     * @param Post $post
-     *
-     * @return PostDTO
-     */
     public static function createFromEntity(Post $post): self
     {
         $dto = new static();

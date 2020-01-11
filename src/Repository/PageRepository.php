@@ -11,20 +11,11 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class PageRepository extends ServiceEntityRepository implements PageRepositoryInterface
 {
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Page::class);
     }
 
-    /**
-     * @param int $offset
-     * @param int $limit
-     *
-     * @return Paginator
-     */
     public function paginate(int $offset, int $limit): Paginator
     {
         $queryBuilder = $this->createQueryBuilder('p')
@@ -35,11 +26,6 @@ class PageRepository extends ServiceEntityRepository implements PageRepositoryIn
         return new Paginator($queryBuilder);
     }
 
-    /**
-     * @param string $url
-     *
-     * @return Page|null
-     */
     public function findByUrl(string $url): ?Page
     {
         /** @var Page|null $page */
@@ -48,11 +34,6 @@ class PageRepository extends ServiceEntityRepository implements PageRepositoryIn
         return $page;
     }
 
-    /**
-     * @param array $criteria
-     *
-     * @return int
-     */
     public function count(array $criteria = []): int
     {
         return parent::count($criteria);

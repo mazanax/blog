@@ -16,7 +16,6 @@ use App\Validation\Constraint\Strategy;
 use App\Validation\Validator\ValidatorInterface;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -31,38 +30,16 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class BlogController extends AbstractController
 {
-    /**
-     * @var PostGetterInterface
-     */
     private $postGetter;
 
-    /**
-     * @var ValidatorInterface
-     */
     private $validator;
 
-    /**
-     * @var RouterInterface
-     */
     private $router;
 
-    /**
-     * @var LoggerInterface
-     */
     private $logger;
 
-    /**
-     * @var int
-     */
     private $onPage;
 
-    /**
-     * @param PostGetterInterface $postGetter
-     * @param ValidatorInterface  $validator
-     * @param RouterInterface     $router
-     * @param LoggerInterface     $logger
-     * @param int                 $onPage
-     */
     public function __construct(
         PostGetterInterface $postGetter,
         ValidatorInterface $validator,
@@ -79,10 +56,6 @@ class BlogController extends AbstractController
 
     /**
      * @Route("/toggle-previews", methods={"POST"}, name="admin_toggle_posts_previews")
-     *
-     * @param Request $request
-     *
-     * @return RedirectResponse
      */
     public function togglePreviews(Request $request): RedirectResponse
     {
@@ -99,12 +72,6 @@ class BlogController extends AbstractController
     /**
      * @Route("/", name="admin_posts", defaults={"strategy"="published"}, methods={"GET"})
      * @Route("/{strategy<\w+>}", name="admin_posts_strategy", methods={"GET"})
-     *
-     * @param PostListTitleGetterInterface $postListTitleGetter
-     * @param Request                      $request
-     * @param string                       $strategy
-     *
-     * @return Response
      */
     public function list(
         PostListTitleGetterInterface $postListTitleGetter,
@@ -133,16 +100,6 @@ class BlogController extends AbstractController
     /**
      * @Route("/{strategy<\w+>}/create", name="admin_posts_create", defaults={"id"=null}, methods={"GET", "POST"})
      * @Route("/{strategy<\w+>}/update/{id<\d+>}", name="admin_posts_update", methods={"GET", "POST"})
-     *
-     * @param EntityManagerInterface     $entityManager
-     * @param PostTagRepositoryInterface $postTagRepository
-     * @param TagRepositoryInterface     $tagRepository
-     * @param PostFillerInterface        $filler
-     * @param Request                    $request
-     * @param string                     $strategy
-     * @param int|null                   $id
-     *
-     * @return Response
      */
     public function modify(
         EntityManagerInterface $entityManager,
@@ -186,14 +143,13 @@ class BlogController extends AbstractController
         $entityManager->persist($post);
         $entityManager->flush();
 
-        $this->addFlash(
-            'success',
-            sprintf(
-                'Post «%s» %s successfully',
-                $post->getTitle(),
-                $id === null ? 'created' : ($post->isPublished() ? 'modified' : 'scheduled')
-            )
-        );
+        $action = 'created';
+
+        if ($id !== null) {
+            $action = $post->isPublished() ? 'modified' : 'scheduled';
+        }
+
+        $this->addFlash('success', sprintf('Post «%s» %s successfully', $post->getTitle(), $action));
 
         $targetStrategy = $post->isPublished() ? PostStrategy::PUBLISHED : PostStrategy::SCHEDULED;
 
@@ -202,15 +158,6 @@ class BlogController extends AbstractController
 
     /**
      * @Route("/{strategy<\w+>}/publish/{id<\d+>}", name="admin_posts_publish", methods={"POST"})
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param PostFillerInterface    $filler
-     * @param Request                $request
-     * @param string                 $strategy
-     * @param int                    $id
-     *
-     * @return Response
-     * @throws Exception
      */
     public function publish(
         EntityManagerInterface $entityManager,
@@ -246,13 +193,6 @@ class BlogController extends AbstractController
 
     /**
      * @Route("/{strategy<\w+>}/remove/{id<\d+>}", name="admin_posts_remove", methods={"POST"})
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param Request                $request
-     * @param string                 $strategy
-     * @param int                    $id
-     *
-     * @return Response
      */
     public function remove(
         EntityManagerInterface $entityManager,
@@ -280,13 +220,6 @@ class BlogController extends AbstractController
         return $this->redirectToRoute('admin_posts_strategy', ['strategy' => $strategy]);
     }
 
-    /**
-     * @param Request $request
-     * @param string  $strategy
-     * @param string  $method
-     *
-     * @return Response|null
-     */
     private function validateStrategy(Request $request, string $strategy, string $method): ?Response
     {
         $errors = $this->validator->validate($strategy, [new Strategy()]);

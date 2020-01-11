@@ -12,19 +12,11 @@ use RuntimeException;
 
 class TagRepository extends ServiceEntityRepository implements TagRepositoryInterface
 {
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Tag::class);
     }
 
-    /**
-     * @param string $name
-     *
-     * @return Tag|null
-     */
     public function findByName(string $name): ?Tag
     {
         /** @var Tag|null $tag */
@@ -33,9 +25,6 @@ class TagRepository extends ServiceEntityRepository implements TagRepositoryInte
         return $tag;
     }
 
-    /**
-     * @param Tag $tag
-     */
     public function persist(Tag $tag): void
     {
         try {
@@ -45,9 +34,6 @@ class TagRepository extends ServiceEntityRepository implements TagRepositoryInte
         }
     }
 
-    /**
-     * @return array
-     */
     public function all(): array
     {
         return $this->findAll();

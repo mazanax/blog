@@ -15,30 +15,16 @@ use RuntimeException;
 
 class PostFiller implements PostFillerInterface
 {
-    /**
-     * @var PostTagRepositoryInterface
-     */
     private $postTagRepository;
 
-    /**
-     * @var PostTagFactoryInterface
-     */
     private $postTagFactory;
 
-    /**
-     * @param PostTagRepositoryInterface $postTagRepository
-     * @param PostTagFactoryInterface    $postTagFactory
-     */
     public function __construct(PostTagRepositoryInterface $postTagRepository, PostTagFactoryInterface $postTagFactory)
     {
         $this->postTagRepository = $postTagRepository;
         $this->postTagFactory = $postTagFactory;
     }
 
-    /**
-     * @param Post    $post
-     * @param PostDTO $dto
-     */
     public function fillFromDto(Post $post, PostDTO $dto): void
     {
         $post->setUrl($dto->url);
@@ -64,12 +50,6 @@ class PostFiller implements PostFillerInterface
         $post->setTags(new ArrayCollection($tags));
     }
 
-    /**
-     * @param Post   $post
-     * @param string $tag
-     *
-     * @return PostTag
-     */
     private function getPostTag(Post $post, string $tag): PostTag
     {
         if (!$post->getId()) {
