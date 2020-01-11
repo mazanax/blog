@@ -74,7 +74,7 @@ class Page
         return $this;
     }
 
-    public function fillFromDTO(PageDTO $dto): void
+    public function fillFromDto(PageDTO $dto): void
     {
         $this->url = $dto->url;
         $this->title = $dto->title;

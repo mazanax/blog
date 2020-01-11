@@ -71,7 +71,7 @@ class PageController extends AbstractController
             );
         }
 
-        $page->fillFromDTO($pageDTO);
+        $page->fillFromDto($pageDTO);
         $this->entityManager->persist($page);
         $this->entityManager->flush();
 

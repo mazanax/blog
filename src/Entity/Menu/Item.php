@@ -113,7 +113,7 @@ abstract class Item
         return $this->children;
     }
 
-    public function fillFromDTO(ItemDTO $dto): void
+    public function fillFromDto(ItemDTO $dto): void
     {
         $this->title = $dto->title;
         $this->parent = $dto->parent;

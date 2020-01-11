@@ -1,66 +1,50 @@
 {% apply spaceless %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Gorshkov Alexander{% endblock %}</title>
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="canonical"
-          href="https://mznx.ru{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
-    {% block meta %}{% endblock %}
+    <!DOCTYPE html>
+    <html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}{{ get_config('site_name', 'My site') }}{% endblock %}</title>
+        <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/manifest.json">
+        {% if get_config('site_domain') %}
+            <link rel="canonical"
+                  href="{{ get_config('site_domain') ~ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}">
+        {% endif %}
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+        {% block meta %}{% endblock %}
 
-    {{ encore_entry_link_tags('app') }}
-    {% block stylesheets %}{% endblock %}
-</head>
-<body>
-<section class="wrapper">
-    <header class="site-header">
-        <h1 class="brand"><a href="/">Gorshkov Alexander</a></h1>
-        {{ site_menu() }}
-    </header>
-    <section class="site-content">
-        {% block body %}{% endblock %}
+        {{ encore_entry_link_tags('app') }}
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+    <section class="wrapper">
+        <header class="site-header">
+            <h1 class="brand"><a href="/">{{ get_config('site_name', 'My site') }}</a></h1>
+            {{ site_menu() }}
+        </header>
+        <section class="site-content">
+            {% block body %}{% endblock %}
+        </section>
+        <footer class="site-footer">{{ get_config('site_name', 'My site') }}
+            &copy; {{ get_config('year', 2019) }}</footer>
     </section>
-    <footer class="site-footer">Gorshkov Alexander &copy; 2019</footer>
-</section>
-{{ encore_entry_script_tags('app') }}
-{% block javascripts %}{% endblock %}
-
-<script type="text/javascript">
-    (function (m, e, t, r, i, k, a) {
-        m[i] = m[i] || function () {
-            (m[i].a = m[i].a || []).push(arguments)
-        };
-        m[i].l = 1 * new Date();
-        k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
-    })
-    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
-    ym(56908009, "init", {
-        clickmap: true,
-        trackLinks: true,
-        accurateTrackBounce: true
-    });
-</script>
-<noscript>
-    <div><img src="https://mc.yandex.ru/watch/56908009" style="position:absolute; left:-9999px;" alt=""/></div>
-</noscript>
-</body>
-</html>
+    {{ encore_entry_script_tags('app') }}
+    {% block javascripts %}{% endblock %}
+    {{ get_config('analytics') }}
+    </body>
+    </html>
 {% endapply %}

@@ -73,7 +73,7 @@ class MenuController extends AbstractController
         }
 
         $item = $itemFactory->createByDTO($itemDTO);
-        $item->fillFromDTO($itemDTO);
+        $item->fillFromDto($itemDTO);
         $items = array_merge($this->repository->all(), [$item]);
         $sorter->sort($items);
 

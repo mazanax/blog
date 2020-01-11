@@ -1,0 +1,60 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Site Config — Admin Panel{% endblock %}
+
+{% block segment %}
+    {% for label, messages in app.flashes(['success', 'error']) %}
+        {% for message in messages %}
+            <div class="ui {{ label }} message">
+                <p>{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div class="ui tall stacked segment">
+        <h2 class="ui header">
+            Site Config
+            <a class="ui right floated primary button" href="{{ path('admin_config_create') }}"
+            >Add new</a>
+        </h2>
+    </div>
+
+    {% if items is not empty %}
+        {% for item in items %}
+            <form action="{{ path('admin_config_remove', {'id': item.id}) }}"
+                  method="POST" id="remove-config-{{ item.id }}"></form>
+
+            <div class="ui stacked segments">
+                <div class="ui clearing blue segment text-wrap">
+                    <div class="ui right floated icon buttons">
+                        <a class="ui mini button"
+                           href="{{ path('admin_config_update', {'id': item.id}) }}"><i
+                                    class="edit icon"></i></a>
+                        <button class="ui mini button" type="submit" form="remove-config-{{ item.id }}"
+                                onclick="return confirm('Do you really want to delete this config item?');"><i
+                                    class="trash icon"></i></button>
+                    </div>
+
+                    <a class="ui header">{{ item.name }}
+                        <div class="sub header">{{ item.slug }}</div>
+                    </a>
+                </div>
+                <div class="ui segment text-wrap">
+                    <code>
+                        {{ item.content|default('empty') }}
+                    </code>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="file outline icon"></i>
+                We don't have any config items matching your query
+            </div>
+            <div class="inline">
+                <a class="ui primary button" href="{{ path('admin_config_create') }}">Add Config Item</a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
