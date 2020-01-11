@@ -17,6 +17,8 @@
             {{ form_row(form.publishedAt) }}
         </div>
 
+        {{ form_row(form.draft) }}
+
         {{ form_row(form.preview, {'attr': {'class': 'js-wysiwyg-editor wysiwyg-small'}}) }}
         {{ form_row(form.text, {'attr': {'class': 'js-wysiwyg-editor wysiwyg-large'}}) }}
         {{ form_end(form) }}

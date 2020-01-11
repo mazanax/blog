@@ -5,21 +5,21 @@ namespace App\Component\PostGetter;
 
 use App\Constant\PostStrategy;
 use App\Entity\Post;
-use App\Repository\Contract\Post\PublishedRepositoryInterface;
+use App\Repository\Contract\Post\DraftRepositoryInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-class PublishedPostGetterStrategy implements PostGetterStrategyInterface
+class DraftPostGetterStrategy implements PostGetterStrategyInterface
 {
     private $postRepository;
 
-    public function __construct(PublishedRepositoryInterface $postRepository)
+    public function __construct(DraftRepositoryInterface $postRepository)
     {
         $this->postRepository = $postRepository;
     }
 
     public function supports(string $strategy): bool
     {
-        return $strategy === PostStrategy::PUBLISHED;
+        return PostStrategy::DRAFTS === $strategy;
     }
 
     public function findById(int $id): ?Post
@@ -29,13 +29,11 @@ class PublishedPostGetterStrategy implements PostGetterStrategyInterface
 
     public function findAll(int $offset, int $limit): Paginator
     {
-        return new Paginator($this->postRepository->createQueryBuilderForPublishedPosts($offset, $limit));
+        return new Paginator($this->postRepository->createQueryBuilderForDraftPosts($offset, $limit));
     }
 
     public function findByTags(array $tags, int $offset, int $limit): Paginator
     {
-        $queryBuilder = $this->postRepository->createQueryBuilderForPublishedPostsWithTags($tags, $offset, $limit);
-
-        return new Paginator($queryBuilder);
+        return new Paginator($this->postRepository->createQueryBuilderForDraftPostsWithTags($tags, $offset, $limit));
     }
 }

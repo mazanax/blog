@@ -19,3 +19,13 @@
         {{ form_errors(form) }}
     </div>
 {% endblock %}
+
+{% block _post_draft_row %}
+    <div class="field {{ errors is not empty ? 'error' }}">
+        <div class="ui toggle checkbox">
+            {{ form_widget(form, {'attr': {'class': 'hidden'}}) }}
+            {{ form_label(form) }}
+        </div>
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}

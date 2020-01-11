@@ -42,11 +42,13 @@ services:
     arguments:
       - '@App\Component\PostGetter\PublishedPostGetterStrategy'
       - '@App\Component\PostGetter\ScheduledPostGetterStrategy'
+      - '@App\Component\PostGetter\DraftPostGetterStrategy'
 
   App\Component\PostListTitleGetter\PostListTitleGetter:
     arguments:
       - '@App\Component\PostListTitleGetter\PublishedPostListTitleStrategy'
       - '@App\Component\PostListTitleGetter\ScheduledPostListTitleStrategy'
+      - '@App\Component\PostListTitleGetter\DraftPostListTitleStrategy'
 
   App\Component\PostListTitleGetter\PostListTitleGetterInterface: '@App\Component\PostListTitleGetter\PostListTitleGetter'
 

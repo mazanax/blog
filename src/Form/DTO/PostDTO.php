@@ -48,6 +48,8 @@ final class PostDTO
      */
     public $tags;
 
+    public $draft;
+
     public function __construct()
     {
         try {
@@ -75,6 +77,7 @@ final class PostDTO
                 return (string) $tag->getTag();
             })
             ->toArray();
+        $dto->draft = $post->isDraft();
 
         return $dto;
     }

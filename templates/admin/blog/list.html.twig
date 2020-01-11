@@ -39,7 +39,7 @@
         </div>
 
         {% for post in posts %}
-            {% if strategy == 'scheduled' %}
+            {% if strategy != 'published' %}
                 <form action="{{ path('admin_posts_publish', {'id': post.id, 'strategy': strategy}) }}"
                       method="POST" id="publish-post-{{ post.id }}"></form>
             {% endif %}
@@ -49,7 +49,7 @@
             <div class="ui stacked segments">
                 <div class="ui clearing blue segment text-wrap">
                     <div class="ui right floated icon buttons">
-                        {% if strategy == 'scheduled' %}
+                        {% if strategy != 'published' %}
                             <button class="ui mini button" type="submit" form="publish-post-{{ post.id }}"
                                     onclick="return confirm('Do you really want to publish this post?');"><i
                                         class="paper plane icon"></i></button>

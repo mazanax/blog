@@ -14,7 +14,6 @@ use App\Repository\Contract\PostTagRepositoryInterface;
 use App\Repository\Contract\TagRepositoryInterface;
 use App\Validation\Constraint\Strategy;
 use App\Validation\Validator\ValidatorInterface;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -121,6 +120,7 @@ class BlogController extends AbstractController
             $post = $this->postGetter->findById($strategy, $id);
         }
         $postDTO = PostDTO::createFromEntity($post);
+        $postDTO->draft = $strategy === PostStrategy::DRAFTS;
 
         $form = $this->createForm(PostType::class, $postDTO);
         $form->handleRequest($request);
@@ -130,7 +130,9 @@ class BlogController extends AbstractController
                 'admin/blog/modify.html.twig',
                 [
                     'id' => $id,
-                    'title' => $id === null ? 'Creating post' : sprintf('Updating «%s»', $postDTO->title),
+                    'title' => $id === null
+                        ? 'Creating post'
+                        : sprintf('Updating %s«%s»', $postDTO->draft ? 'draft ' : '', $postDTO->title),
                     'strategy' => $strategy,
                     'tags' => $tagRepository->all(),
                     'form' => $form->createView()
@@ -144,14 +146,19 @@ class BlogController extends AbstractController
         $entityManager->flush();
 
         $action = 'created';
+        $type = $post->isDraft() ? 'Draft' : 'Post';
 
         if ($id !== null) {
-            $action = $post->isPublished() ? 'modified' : 'scheduled';
+            $action = $post->isScheduled() ? 'scheduled' : 'modified';
         }
 
-        $this->addFlash('success', sprintf('Post «%s» %s successfully', $post->getTitle(), $action));
+        $this->addFlash('success', sprintf('%s «%s» %s successfully', $type, $post->getTitle(), $action));
 
-        $targetStrategy = $post->isPublished() ? PostStrategy::PUBLISHED : PostStrategy::SCHEDULED;
+        $targetStrategy = PostStrategy::DRAFTS;
+
+        if (!$post->isDraft()) {
+            $targetStrategy = $post->isScheduled() ? PostStrategy::SCHEDULED : PostStrategy::PUBLISHED;
+        }
 
         return $this->redirectToRoute('admin_posts_strategy', ['strategy' => $targetStrategy]);
     }
@@ -161,7 +168,6 @@ class BlogController extends AbstractController
      */
     public function publish(
         EntityManagerInterface $entityManager,
-        PostFillerInterface $filler,
         Request $request,
         string $strategy,
         int $id
@@ -179,16 +185,19 @@ class BlogController extends AbstractController
         }
 
         $post = $this->postGetter->findById($strategy, $id);
-        $postDTO = PostDTO::createFromEntity($post);
-        $postDTO->publishedAt = new DateTimeImmutable();
+        $type = $post->isDraft() ? 'Draft' : 'Post';
 
-        $filler->fillFromDto($post, $postDTO);
+        $post->publish();
+
         $entityManager->persist($post);
         $entityManager->flush();
 
-        $this->addFlash('success', sprintf('Post «%s» published successfully', $post->getTitle()));
+        $action = 'Draft' && $post->isScheduled() ? 'scheduled' : 'published';
+        $this->addFlash('success', sprintf('%s «%s» %s successfully', $type, $post->getTitle(), $action));
 
-        return $this->redirectToRoute('admin_posts_strategy', ['strategy' => PostStrategy::PUBLISHED]);
+        $targetStrategy = $post->isScheduled() ? PostStrategy::SCHEDULED : PostStrategy::PUBLISHED;
+
+        return $this->redirectToRoute('admin_posts_strategy', ['strategy' => $targetStrategy]);
     }
 
     /**
@@ -215,7 +224,8 @@ class BlogController extends AbstractController
         $entityManager->remove($post);
         $entityManager->flush();
 
-        $this->addFlash('success', sprintf('Post «%s» removed successfully', $post->getTitle()));
+        $type = $post->isDraft() ? 'Draft' : 'Post';
+        $this->addFlash('success', sprintf('%s «%s» removed successfully', $type, $post->getTitle()));
 
         return $this->redirectToRoute('admin_posts_strategy', ['strategy' => $strategy]);
     }

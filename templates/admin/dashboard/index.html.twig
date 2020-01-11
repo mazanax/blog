@@ -7,7 +7,25 @@
         <h2 class="ui header">Dashboard</h2>
     </div>
 
-    <div class="ui three cards">
+    <div class="ui four cards">
+        <div class="orange card">
+            <div class="center aligned content">
+                <div class="ui statistic">
+                    <div class="label">
+                        Drafts
+                    </div>
+                    <div class="value">
+                        {{ drafts_count }}
+                    </div>
+                </div>
+            </div>
+            <a class="ui bottom attached basic button"
+               href="{{ path('admin_posts_create', {'strategy': 'drafts'}) }}">
+                <i class="add icon"></i>
+                Add new
+            </a>
+        </div>
+
         <div class="yellow card">
             <div class="center aligned content">
                 <div class="ui statistic">
@@ -134,6 +152,43 @@
 
             <a class="ui bottom attached basic button"
                href="{{ path('admin_posts_strategy', {'strategy': 'published'}) }}">
+                <i class="eye icon"></i>
+                View all
+            </a>
+        </div>
+
+        <div class="orange card">
+            {% if drafts is not empty %}
+                <div class="content">
+                    <div class="header">Drafts</div>
+                </div>
+                {% for item in drafts %}
+                    <div class="content">
+                        <a href="{{ path('admin_posts_update', {'strategy': 'drafts', 'id': item.id}) }}"
+                           class="header">{{ item.title }}</a>
+                        <div class="meta">{{ item.publishedAt|date('M j, Y h:i A') }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="content">
+                    <div class="header">Drafts</div>
+                    <div class="ui basic placeholder segment">
+                        <div class="ui icon header">
+                            <i class="file outline icon"></i>
+                            There are no drafts yet.
+                        </div>
+                        <a class="ui primary button"
+                           href="{{ path('admin_posts_create', {'strategy': 'drafts'}) }}">
+                            <i class="add icon"></i>
+                            Add new
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+
+
+            <a class="ui bottom attached basic button"
+               href="{{ path('admin_posts_strategy', {'strategy': 'drafts'}) }}">
                 <i class="eye icon"></i>
                 View all
             </a>

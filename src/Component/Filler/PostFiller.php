@@ -31,6 +31,7 @@ class PostFiller implements PostFillerInterface
         $post->setTitle($dto->title);
         $post->setPreview($dto->preview ?? '');
         $post->setText($dto->text);
+        $post->setDraft($dto->draft);
         try {
             $post->setPublishedAt($dto->publishedAt ?? new DateTimeImmutable());
         } catch (Exception $e) {

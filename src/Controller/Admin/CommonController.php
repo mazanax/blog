@@ -26,17 +26,21 @@ class CommonController extends AbstractController
         PageRepositoryInterface $pageRepository
     ): Response
     {
+        $draftsCount = $postRepository->countDrafts();
         $scheduledCount = $postRepository->countScheduled();
         $publishedCount = $postRepository->countPublished();
         $staticPagesCount = $pageRepository->count();
 
+        $drafts = $postGetter->findAll(PostStrategy::DRAFTS, 0, 5);
         $schedules = $postGetter->findAll(PostStrategy::SCHEDULED, 0, 5);
         $recentPosts = $postGetter->findAll(PostStrategy::PUBLISHED, 0, 5);
 
         return $this->render('admin/dashboard/index.html.twig', [
+            'drafts_count' => $draftsCount,
             'scheduled_count' => $scheduledCount,
             'published_count' => $publishedCount,
             'static_pages_count' => $staticPagesCount,
+            'drafts' => $drafts,
             'schedules' => $schedules,
             'recent_posts' => $recentPosts,
         ]);

@@ -5,14 +5,14 @@ namespace App\Component\PostGetter;
 
 use App\Constant\PostStrategy;
 use App\Entity\Post;
-use App\Repository\Contract\PostRepositoryInterface;
+use App\Repository\Contract\Post\ScheduledRepositoryInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class ScheduledPostGetterStrategy implements PostGetterStrategyInterface
 {
     private $postRepository;
 
-    public function __construct(PostRepositoryInterface $postRepository)
+    public function __construct(ScheduledRepositoryInterface $postRepository)
     {
         $this->postRepository = $postRepository;
     }

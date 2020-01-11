@@ -60,6 +60,11 @@ class Post
      */
     private $tags;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $draft;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -123,10 +128,10 @@ class Post
         return $this->createdAt;
     }
 
-    public function isPublished(): bool
+    public function isScheduled(): bool
     {
         try {
-            return $this->getPublishedAt() <= new DateTimeImmutable();
+            return $this->getPublishedAt() > new DateTimeImmutable();
         } catch (Exception $exception) {
             throw new RuntimeException($exception->getMessage(), 0, $exception);
         }
@@ -163,6 +168,36 @@ class Post
     {
         try {
             $this->createdAt = new DateTimeImmutable();
+        } catch (Exception $e) {
+            throw new RuntimeException('Cannot create datetime instance', 0, $e);
+        }
+    }
+
+    public function isDraft(): bool
+    {
+        return $this->draft ?? false;
+    }
+
+    public function setDraft(bool $draft): void
+    {
+        $this->draft = $draft;
+    }
+
+    public function publish(): void
+    {
+        $wasDraft = $this->isDraft();
+
+        if ($this->isDraft()) {
+            $this->setDraft(false);
+        }
+
+        // if draft has filled publishedAt field in the future then we should keep this date
+        if ($wasDraft && $this->isScheduled()) {
+            return;
+        }
+
+        try {
+            $this->setPublishedAt(new DateTimeImmutable());
         } catch (Exception $e) {
             throw new RuntimeException('Cannot create datetime instance', 0, $e);
         }

@@ -3,22 +3,11 @@ declare(strict_types=1);
 
 namespace App\Repository\Contract;
 
-use App\Entity\Post;
-use Doctrine\ORM\QueryBuilder;
+use App\Repository\Contract\Post\DraftRepositoryInterface;
+use App\Repository\Contract\Post\PublishedRepositoryInterface;
+use App\Repository\Contract\Post\ScheduledRepositoryInterface;
 
-interface PostRepositoryInterface
+interface PostRepositoryInterface extends DraftRepositoryInterface, PublishedRepositoryInterface, ScheduledRepositoryInterface
 {
-    public function countPublished(): int;
 
-    public function countScheduled(): int;
-
-    public function findById(int $id): Post;
-
-    public function createQueryBuilderForPublishedPosts(int $offset, int $limit): QueryBuilder;
-
-    public function createQueryBuilderForScheduledPosts(int $offset, int $limit): QueryBuilder;
-
-    public function createQueryBuilderForPublishedPostsWithTags(array $tags, int $offset, int $limit): QueryBuilder;
-
-    public function createQueryBuilderForScheduledPostsWithTags(array $tags, int $offset, int $limit): QueryBuilder;
 }

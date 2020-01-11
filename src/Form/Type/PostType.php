@@ -5,6 +5,7 @@ namespace App\Form\Type;
 
 use App\Form\DTO\PostDTO;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -26,6 +27,7 @@ class PostType extends AbstractType
                 'time_widget' => 'text',
                 'with_seconds' => false
             ])
+            ->add('draft', CheckboxType::class)
             ->add('preview', TextareaType::class, [
                 'required' => false,
             ])

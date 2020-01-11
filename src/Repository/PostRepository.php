@@ -22,8 +22,8 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
     public function createQueryBuilderForPublishedPosts(int $offset, int $limit): QueryBuilder
     {
         try {
-            return $this->createQueryBuilder('p')
-                ->where('p.publishedAt <= :now')
+            return $this->createQueryBuilderForCompletedPosts('p')
+                ->andWhere('p.publishedAt <= :now')
                 ->setParameter('now', new DateTimeImmutable())
                 ->orderBy('p.publishedAt', 'DESC')
                 ->setMaxResults($limit)
@@ -36,7 +36,7 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
     public function createQueryBuilderForScheduledPosts(int $offset, int $limit): QueryBuilder
     {
         try {
-            return $this->createQueryBuilder('p')
+            return $this->createQueryBuilderForCompletedPosts('p')
                 ->where('p.publishedAt > :now')
                 ->setParameter('now', new DateTimeImmutable())
                 ->orderBy('p.publishedAt', 'DESC')
@@ -85,7 +85,7 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
     {
         try {
             return (int) $this->createQueryBuilder('p')
-                ->where('p.publishedAt <= :now')
+                ->andWhere('p.publishedAt <= :now')
                 ->setParameter('now', new DateTimeImmutable())
                 ->select('COUNT(p) as count')
                 ->getQuery()
@@ -98,8 +98,8 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
     public function countScheduled(): int
     {
         try {
-            return (int) $this->createQueryBuilder('p')
-                ->where('p.publishedAt > :now')
+            return (int) $this->createQueryBuilderForCompletedPosts('p')
+                ->andWhere('p.publishedAt > :now')
                 ->setParameter('now', new DateTimeImmutable())
                 ->select('COUNT(p) as count')
                 ->getQuery()
@@ -107,5 +107,52 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
         } catch (Exception $e) {
             throw new RuntimeException('Cannot count scheduled posts: ' . $e->getMessage(), 0, $e);
         }
+    }
+
+    public function countDrafts(): int
+    {
+        try {
+            return (int) $this->createQueryBuilder('p')
+                ->where('p.draft = true')
+                ->andWhere('p.publishedAt > :now')
+                ->setParameter('now', new DateTimeImmutable())
+                ->select('COUNT(p) as count')
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (Exception $e) {
+            throw new RuntimeException('Cannot count draft posts: ' . $e->getMessage(), 0, $e);
+        }
+    }
+
+    public function createQueryBuilderForDraftPosts(int $offset, int $limit): QueryBuilder
+    {
+        try {
+            return $this->createQueryBuilder('p')
+                ->where('p.draft = true')
+                ->orderBy('p.publishedAt', 'DESC')
+                ->setMaxResults($limit)
+                ->setFirstResult($offset);
+        } catch (Exception $e) {
+            throw new RuntimeException('Cannot get draft posts: ' . $e->getMessage(), 0, $e);
+        }
+    }
+
+    public function createQueryBuilderForDraftPostsWithTags(array $tags, int $offset, int $limit): QueryBuilder
+    {
+        try {
+            return $this->createQueryBuilderForDraftPosts($offset, $limit)
+                ->join('p.tags', 'pt')
+                ->join('pt.tag', 't')
+                ->andWhere('t.name IN (:tags)')
+                ->setParameter('tags', $tags);
+        } catch (Exception $e) {
+            throw new RuntimeException('Cannot get draft posts with tags: ' . $e->getMessage(), 0, $e);
+        }
+    }
+
+    private function createQueryBuilderForCompletedPosts(string $alias): QueryBuilder
+    {
+        return $this->createQueryBuilder($alias)
+            ->where(sprintf('%s.draft = false', $alias));
     }
 }
