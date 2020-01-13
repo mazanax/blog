@@ -27,7 +27,9 @@ class PostType extends AbstractType
                 'time_widget' => 'text',
                 'with_seconds' => false
             ])
-            ->add('draft', CheckboxType::class)
+            ->add('draft', CheckboxType::class, [
+                'required' => false,
+            ])
             ->add('preview', TextareaType::class, [
                 'required' => false,
             ])

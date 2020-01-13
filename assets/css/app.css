@@ -31,7 +31,6 @@
     font-style: italic;
 }
 
-
 html, body, h1, header, footer, section, article, p {
     background: #fff;
     margin: 0;
@@ -280,4 +279,13 @@ footer.site-footer {
 
 [class^="note-float-"] {
     margin: 5px;
+}
+
+pre,
+blockquote {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 40px;
+    margin-inline-end: 40px;
 }
