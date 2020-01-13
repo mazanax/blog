@@ -80,3 +80,19 @@ span.secondary {
     font-size: 12pt;
     font-family: PT Serif, serif;
 }
+
+.note-editor .note-editing-area .note-editable pre,
+.note-editor .note-editing-area .note-editable blockquote {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 40px;
+    margin-inline-end: 40px;
+}
+
+.note-editor .note-editing-area .note-editable pre,
+.note-editor .note-editing-area .note-editable code {
+    font-family: Fira Mono, monospace;
+    font-size: 1em;
+    line-height: 1.75;
+}
