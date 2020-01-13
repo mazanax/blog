@@ -27,6 +27,7 @@
         <meta name="theme-color" content="#ffffff">
         {% block meta %}{% endblock %}
 
+        <link rel="stylesheet" href="/dist/vendor/prism.css">
         {{ encore_entry_link_tags('app') }}
         {% block stylesheets %}{% endblock %}
     </head>
@@ -42,6 +43,7 @@
         <footer class="site-footer">{{ get_config('site_name', 'My site') }}
             &copy; {{ get_config('year', 2019) }}</footer>
     </section>
+    <script src="/dist/vendor/prism.js"></script>
     {{ encore_entry_script_tags('app') }}
     {% block javascripts %}{% endblock %}
     {{ get_config('analytics') }}

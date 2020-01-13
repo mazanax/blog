@@ -1,60 +1,72 @@
 {% extends 'admin/base.html.twig' %}
 
 {% block stylesheets %}
-    <link href="/dist/vendor/summernote-lite.css" rel="stylesheet">
+    <link rel="stylesheet" href="/dist/vendor/prism.css"></link>
 {% endblock %}
 
 {% block javascripts %}
-    <script src="/dist/vendor/summernote-lite.min.js"></script>
+    <script src="/dist/vendor/prism.js"></script>
+    <script src="https://cdn.tiny.cloud/1/l1qqj5tgq0by5dt8jb3r04pya9lbyt74dhp3icr2z08fcg3f/tinymce/5/tinymce.min.js"
+            referrerpolicy="origin"></script>
     <script>
-        $('.js-wysiwyg-editor').each((_, el) => {
-            let height = $(el).hasClass('wysiwyg-small') ? 200 :
-                $(el).hasClass('wysiwyg-large') ? 450 : 300;
+        $(function () {
+            document.querySelectorAll('.js-wysiwyg-editor').forEach(el => {
+                let height = $(el).hasClass('wysiwyg-small') ? 200 :
+                    $(el).hasClass('wysiwyg-large') ? 450 : 300;
 
-            $(el).summernote({
-                minHeight: height,
-                width: 1005,
-                toolbar: [
-                    ['styles', ['style']],
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['font', ['strikethrough', 'superscript', 'subscript']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['table', ['table']],
-                    ['insert', ['link', 'picture', 'video']],
-                    ['view', ['fullscreen', 'codeview']],
-                ],
-                callbacks: {
-                    onImageUpload: function (files) {
-                        const $this = $(this);
-
-                        $(files).each(function () {
-                            let file = this;
-                            let data = new FormData();
-
-                            data.append('image', file);
-
-                            $('#loader').show();
-
-                            $.ajax({
-                                data: data,
-                                type: 'POST',
-                                url: '{{ path('admin_upload_image') }}',
-                                cache: false,
-                                contentType: false,
-                                processData: false,
-                                success: function (url) {
-                                    $this.summernote('insertImage', url);
-                                },
-                                error: function (jqXHR, textStatus, err) {
-                                    alert('Image uploading: ' + err);
-                                },
-                                complete: () => {
-                                    $('#loader').hide();
-                                }
-                            });
+                tinymce.init({
+                    target: el,
+                    height: height,
+                    menubar: false,
+                    plugins: 'table lists fullscreen code image link codesample',
+                    toolbar: 'styleselect | bold italic underline strikethrough | subscript superscript | alignleft aligncenter alignright alignnone | link image table codesample | code fullscreen',
+                    codesample_languages: [
+                        {text: 'HTML/XML', value: 'markup'},
+                        {text: 'JavaScript', value: 'javascript'},
+                        {text: 'JSON', value: 'json'},
+                        {text: 'YAML', value: 'yaml'},
+                        {text: 'CSS', value: 'css'},
+                        {text: 'PHP', value: 'php'},
+                        {text: 'Ruby', value: 'ruby'},
+                        {text: 'Python', value: 'python'},
+                        {text: 'Java', value: 'java'},
+                        {text: 'Regex', value: 'regex'},
+                        {text: 'C', value: 'c'},
+                        {text: 'C#', value: 'csharp'},
+                        {text: 'C++', value: 'cpp'},
+                        {text: 'Twig', value: 'twig'},
+                        {text: 'SQL', value: 'sql'},
+                        {text: 'Go', value: 'go'},
+                        {text: 'NGINX', value: 'nginx'}
+                    ],
+                    width: 1004,
+                    content_style: 'blockquote,pre{display:block;margin-block-start:1em;margin-block-end:1em;margin-inline-start:40px;margin-inline-end:40px}' +
+                        'code,pre{font-family:Fira Mono,monospace;font-size:1em;line-height:1.75}' +
+                        'p{line-height:1.25;font-size:12pt;font-family:PT Serif,serif;margin:.5em 0}',
+                    images_upload_handler: function (blobInfo, success, failure) {
+                        let data = new FormData();
+                        data.append('image', blobInfo.blob(), blobInfo.filename());
+                        $('#loader').show();
+                        $.ajax({
+                            data: data,
+                            type: 'POST',
+                            url: '{{ path('admin_upload_image') }}',
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            success: function (url) {
+                                success(url);
+                            },
+                            error: function (jqXHR, textStatus, err) {
+                                failure('HTTP Error: ' + jqXHR.status);
+                                console.log(textStatus, err);
+                            },
+                            complete: () => {
+                                $('#loader').hide();
+                            }
                         });
                     }
-                }
+                });
             });
         });
     </script>
