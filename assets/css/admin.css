@@ -81,6 +81,15 @@ span.secondary {
     font-family: PT Serif, serif;
 }
 
+.note-editor .note-editing-area .note-editable p {
+    margin: 1em 0;
+}
+
+.note-editor .note-editing-area .note-editable img {
+    max-width: 100%;
+    margin: 5px;
+}
+
 .note-editor .note-editing-area .note-editable pre,
 .note-editor .note-editing-area .note-editable blockquote {
     display: block;

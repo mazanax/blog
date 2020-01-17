@@ -198,6 +198,7 @@ h1 a:active {
 
 .blog-post img:not(.share-btn) {
     max-width: 100%;
+    margin: 5px;
 }
 
 .blog-post section.text {
@@ -218,7 +219,7 @@ h1 a:active {
 }
 
 .blog-post .text p {
-    margin: .5em 0;
+    margin: 1em 0;
 }
 
 .blog-post footer {
